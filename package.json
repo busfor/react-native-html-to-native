@@ -1,0 +1,56 @@
+{
+  "name": "react-native-html-to-native",
+  "title": "React Native Html To Native",
+  "version": "1.0.0",
+  "description": "Create customizable React Native views from HTML markup",
+  "main": "dist/index.js",
+  "typings": "dist/index.d.ts",
+  "scripts": {
+    "build": "rm -rf ./dist && tsc",
+    "version": "auto-changelog -p && git add CHANGELOG.md"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/busfor/react-native-html-to-native.git",
+    "baseUrl": "https://github.com/busfor/react-native-html-to-native"
+  },
+  "keywords": [
+    "react-native",
+    "html",
+    "parser",
+    "render",
+    "renderer",
+    "parse"
+  ],
+  "author": {
+    "name": "Ivan Sokolovskii",
+    "email": "ivan3177@icloud.com"
+  },
+  "license": "MIT",
+  "licenseFilename": "LICENSE",
+  "readmeFilename": "README.md",
+  "peerDependencies": {
+    "react": "^16.8.1",
+    "react-native": ">=0.60.0-rc.0 <1.0.x"
+  },
+  "devDependencies": {
+    "@react-native-community/eslint-config": "^1.0.0",
+    "@types/react": "^16.9.34",
+    "@types/react-native": "^0.62.2",
+    "@typescript-eslint/eslint-plugin": "^2.27.0",
+    "@typescript-eslint/parser": "^2.27.0",
+    "auto-changelog": "^2.0.0",
+    "eslint": "^6.8.0",
+    "eslint-plugin-import": "^2.20.2",
+    "eslint-plugin-prettier": "^3.1.3",
+    "prettier": "^2.0.4",
+    "react": "^16.9.0",
+    "react-native": "^0.61.5",
+    "typescript": "^3.8.3"
+  },
+  "dependencies": {
+    "@types/entities": "^1.1.1",
+    "entities": "^2.0.0",
+    "htmlparser2-without-node-native": "^3.9.2"
+  }
+}
