@@ -42,7 +42,7 @@ const domToNode = (dom: any | null, parent: Node | null = null): any => {
           })
         })
 
-        const tag = new Tag(node.name, currentPaths, parent, node.attribs)
+        const tag = new Tag(node.name, currentPaths.reverse(), parent, node.attribs)
         const nativeNode = new Node('tag', { tag })
 
         tag.children = domToNode(node.children, nativeNode)

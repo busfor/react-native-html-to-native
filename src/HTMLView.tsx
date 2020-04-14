@@ -1,35 +1,60 @@
-import React, { Fragment, ReactType, memo, useState, useEffect, useCallback, useMemo } from 'react'
-import { View, Text, TouchableOpacity } from 'react-native'
+import React, { Fragment, ReactType, ReactNode, memo, useState, useEffect, useCallback, useMemo } from 'react'
+import { View, Text, TouchableOpacity, Linking, StyleProp, ViewStyle } from 'react-native'
 
-import { HTMLRendererProps, Node, ComponentProps } from './types'
+import { HTMLRendererProps, Node, ComponentProps, ElementRenderer } from './types'
 import { htmlToElement } from './utils'
 
 const HTMLRenderer = memo(({ html, renderers, styles, passProps, onError, onLinkPress }: HTMLRendererProps) => {
   const [parsedHtml, setParsedHtml] = useState<Node[] | null>(null)
 
+  const getRenderer = useCallback(
+    (path: string[]): ElementRenderer | null => {
+      if (renderers) {
+        for (let i = 0, p; (p = path[i]); i++) {
+          if (renderers[p]) {
+            return renderers[p]
+          }
+        }
+      }
+      return null
+    },
+    [renderers]
+  )
+
+  const getStyle = useCallback(
+    (path: string[]): StyleProp<ViewStyle> => {
+      if (styles) {
+        for (let i = 0, p; (p = path[i]); i++) {
+          if (styles[p]) {
+            return styles[p]
+          }
+        }
+      }
+      return {}
+    },
+    [styles]
+  )
+
   const renderNode = useCallback(
-    (node: Node) => {
+    (node: Node): ReactNode => {
       switch (node.type) {
         case 'text':
           return node.data
         case 'tag':
           const tag = node.tag
 
-          let style = {}
-          if (styles && styles[tag.name]) {
-            style = { ...style, ...styles[tag.name] }
-          }
+          const style = getStyle(node.tag.path)
+          const componentProps: ComponentProps = { style }
 
           let props = { ...tag.attributes, data: node.data }
           if (passProps) {
             props = { ...props, ...passProps }
           }
 
-          if (renderers && renderers[tag.name]) {
-            return renderers[tag.name](node, style, props)
+          const renderer = getRenderer(node.tag.path)
+          if (renderer) {
+            return renderer(node, style, props)
           }
-
-          const componentProps: ComponentProps = { style }
 
           let RenderComponent: ReactType
           switch (tag.type) {
@@ -52,25 +77,32 @@ const HTMLRenderer = memo(({ html, renderers, styles, passProps, onError, onLink
           )
       }
     },
-    [renderers, styles, passProps]
+    [getRenderer, getStyle, styles, passProps]
   )
 
-  const handleHtmlParse = useCallback((err, parsed: Node[]) => {
-    if (err && onError) {
-      onError(err)
-    }
-    setParsedHtml(parsed)
-  }, [])
+  const handleHtmlParse = useCallback(
+    (err, parsed: Node[]) => {
+      if (err && onError) {
+        onError(err)
+      }
+      setParsedHtml(parsed)
+    },
+    [onError]
+  )
 
   const handleLinkPress = useCallback(
-    (url: string) => {
+    async (url: string) => {
       if (onLinkPress) {
         onLinkPress(url)
       } else {
-        console.log(url)
+        try {
+          await Linking.openURL(url)
+        } catch (err) {
+          onError(err)
+        }
       }
     },
-    [onLinkPress]
+    [onLinkPress, onError]
   )
 
   const renderedHtml = useMemo(() => parsedHtml && parsedHtml.map((node) => renderNode(node)), [parsedHtml])

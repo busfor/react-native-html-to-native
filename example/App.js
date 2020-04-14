@@ -10,7 +10,7 @@ const styles = StyleSheet.create({
   div: {
     flex: 1,
   },
-  p: {
+  'div>p': {
     fontSize: 35,
   },
 });

@@ -1,5 +1,5 @@
 import { ReactNode } from 'react'
-import { ViewStyle } from 'react-native'
+import { ViewStyle, StyleProp } from 'react-native'
 
 export interface HTMLRendererProps {
   html: string
@@ -15,12 +15,12 @@ export interface HTMLRendererProps {
 }
 
 export interface NodeStyle {
-  [s: string]: ViewStyle
+  [s: string]: StyleProp<ViewStyle>
 }
 
 export type ElementRenderer = (
   node: Node,
-  style: NodeStyle,
+  style: StyleProp<ViewStyle>,
   props: {
     [s: string]: any
   }
