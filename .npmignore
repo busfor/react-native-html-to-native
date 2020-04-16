@@ -10,3 +10,5 @@ build
 local.properties
 android.iml
 .eslintrc.js
+yarn-error.log
+__tests__
