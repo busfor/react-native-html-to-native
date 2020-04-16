@@ -6,9 +6,23 @@
 
 ---
 
+# TODO:
+
+⬜️ Add documentation
+
+✅ Add usage example
+
+⬜️ Complete example app
+
+✅ Add \<img> tag parsing
+
+⬜️ Add siblings handling
+
 ## Getting started
 
 `$ yarn add @busfor/react-native-html-to-native`
+
+## Properties
 
 ## Usage
 
@@ -17,4 +31,32 @@ import HTML from '@busfor/react-native-html-to-native'
 ```
 
 ```jsx
+<HTMLView
+  onLinkPress={(url) => console.log(url)}
+  onError={(err) => console.log(err)}
+  styles={{
+    TextNode: {
+      fontSize: 35,
+    },
+    'a.link': {
+      width: 100,
+      height: 50,
+    },
+    'a.link>TextNode': {
+      fontSize: 50,
+    },
+    img: {
+      width: 300,
+      height: 200,
+    },
+  }
+  renderers={{
+    'a.link': (node, renderChildren, style, props) => (
+      <TouchableHighlight onPress={() => console.log('Clicked', node.attributes.href)} style={style}>
+        {renderChildren(node.children)}
+      </TouchableHighlight>
+    ),
+  }}
+  html='<div><p>Paragraph</p><a class="link" href="https://www.google.com/">Link</a><img src="https://miro.medium.com/max/1200/1*mk1-6aYaf_Bes1E3Imhc0A.jpeg"/>'
+/>
 ```

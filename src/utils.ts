@@ -1,8 +1,8 @@
 // @ts-ignore
 import htmlparser from 'htmlparser2-without-node-native'
 
-import { Node, ParseCallback, Tag } from './types'
-import { TextTags, TouchableTags, ContentTags, IgnoredTags } from './constants'
+import { Node, ParseCallback, NodeType } from './types'
+import { TextTags, TouchableTags, ContentTags, IgnoredTags, ImageTags } from './constants'
 
 export const htmlToElement = (rawHtml: string, done: ParseCallback): void => {
   const handler = new htmlparser.DomHandler((err: any, dom: any) => {
@@ -17,71 +17,51 @@ export const htmlToElement = (rawHtml: string, done: ParseCallback): void => {
 const domToNode = (dom: any | null, parent: Node | null = null): any => {
   if (!dom) return null
   return dom.map((node: any) => {
-    switch (node.type) {
-      case 'text':
-        return new Node('text', { data: node.data })
-      case 'tag':
-        if (node.name === 'br') {
-          return new Node('text', { data: '\n' })
-        }
-
-        const currentPaths = [node.name]
-        const htmlClasses = node.attribs?.class?.split(' ') || []
-        const htmlIds = node.attribs?.id?.split(' ') || []
-        htmlClasses.forEach((htmlClass: string) => {
-          currentPaths.push(`${node.name}.${htmlClass}`)
-        })
-        currentPaths.forEach((path) => {
-          htmlIds.forEach((htmlId: string) => {
-            currentPaths.push(`${path}#${htmlId}`)
-          })
-        })
-        parent?.tag.path.forEach((parentPath) => {
-          currentPaths.forEach((path) => {
-            currentPaths.push(`${parentPath}>${path}`)
-          })
-        })
-
-        const tag = new Tag(node.name, currentPaths.reverse(), parent, node.attribs)
-        const nativeNode = new Node('tag', { tag })
-
-        tag.children = domToNode(node.children, nativeNode)
-        switch (node.name) {
-          case TextTags:
-            tag.type = 'text'
-            break
-          case TouchableTags:
-            tag.type = 'touchable'
-            break
-          case ContentTags:
-            tag.type = 'view'
-            break
-          case IgnoredTags:
-            return null
-          // TODO: Add lists parsing
-          case 'ol':
-            return null
-          case 'ul':
-            return null
-          // TODO: Add Image parsing
-          case 'img':
-            return null
-          // TODO: Add input fields parsing
-          case 'input':
-            return null
-          case 'textarea':
-            return null
-          // TODO: Add table parsing
-          case 'table':
-          case 'tr':
-          case 'td':
-          case 'th':
-            return null
-          default:
-            return domToNode(node.children, node)
-        }
-
-        return nativeNode
+    if (IgnoredTags.includes(node.name)) {
+      return null
     }
+
+    const currentPaths = [node.name || 'TextNode']
+    const htmlClasses = node.attribs?.class?.split(' ') || []
+    const htmlIds = node.attribs?.id?.split(' ') || []
+    htmlClasses.forEach((htmlClass: string) => {
+      currentPaths.push(`${node.name}.${htmlClass}`)
+    })
+    currentPaths.forEach((path) => {
+      htmlIds.forEach((htmlId: string) => {
+        currentPaths.push(`${path}#${htmlId}`)
+      })
+    })
+    parent?.path.forEach((parentPath) => {
+      currentPaths.forEach((path) => {
+        currentPaths.push(`${parentPath}>${path}`)
+      })
+    })
+
+    let data: string
+    if (node.type === 'text') {
+      data = node.data
+    } else if (node.name === 'br') {
+      data = '\n'
+    } else {
+      data = node.name
+    }
+
+    let nodeType: NodeType
+    if (node.type === 'text' || node.name === 'br') {
+      nodeType = 'text'
+    } else if (TouchableTags.includes(node.name)) {
+      nodeType = 'touchable'
+    } else if (ContentTags.includes(node.name) || TextTags.includes(node.name)) {
+      nodeType = 'container'
+    } else if (ImageTags.includes(node.name)) {
+      nodeType = 'image'
+    } else {
+      return domToNode(node.children, parent)
+    }
+
+    const nativeNode = new Node(nodeType, currentPaths.reverse(), parent, node.attribs, data)
+    nativeNode.children = domToNode(node.children, nativeNode)
+    return nativeNode
   })
 }

@@ -1,5 +1,5 @@
-import React, { Fragment, ReactType, ReactNode, memo, useState, useEffect, useCallback, useMemo } from 'react'
-import { View, Text, TouchableOpacity, Linking, StyleProp, ViewStyle } from 'react-native'
+import React, { Fragment, ReactNode, memo, useState, useEffect, useCallback, useMemo } from 'react'
+import { View, Text, TouchableOpacity, Linking, StyleProp, ViewStyle, Image } from 'react-native'
 
 import { HTMLRendererProps, Node, ComponentProps, ElementRenderer } from './types'
 import { htmlToElement } from './utils'
@@ -35,49 +35,59 @@ const HTMLRenderer = memo(({ html, renderers, styles, passProps, onError, onLink
     [styles]
   )
 
-  const renderNode = useCallback(
-    (node: Node): ReactNode => {
-      switch (node.type) {
-        case 'text':
-          return node.data
-        case 'tag':
-          const tag = node.tag
-
-          const style = getStyle(node.tag.path)
-          const componentProps: ComponentProps = { style }
-
-          let props = { ...tag.attributes, data: node.data }
-          if (passProps) {
-            props = { ...props, ...passProps }
+  const handleLinkPress = useCallback(
+    async (url?: string) => {
+      if (!url) {
+        return
+      }
+      if (onLinkPress) {
+        onLinkPress(url)
+      } else {
+        try {
+          await Linking.openURL(url)
+        } catch (err) {
+          if (onError) {
+            onError(err)
           }
-
-          const renderer = getRenderer(node.tag.path)
-          if (renderer) {
-            return renderer(node, style, props)
-          }
-
-          let RenderComponent: ReactType
-          switch (tag.type) {
-            case 'text':
-              RenderComponent = Text
-              break
-            case 'touchable':
-              RenderComponent = TouchableOpacity
-              componentProps.onPress = () => handleLinkPress('Test')
-              break
-            case 'view':
-            default:
-              RenderComponent = View
-          }
-
-          return (
-            <RenderComponent {...componentProps}>
-              {tag.children?.map((childNode) => renderNode(childNode))}
-            </RenderComponent>
-          )
+        }
       }
     },
-    [getRenderer, getStyle, styles, passProps]
+    [onLinkPress, onError]
+  )
+
+  const renderNode = useCallback(
+    (node: Node): ReactNode => {
+      const renderNodes = (nodes?: Node[]) => nodes?.map((n) => <>{renderNode(n)}</>)
+
+      const style = getStyle(node.path)
+      const componentProps: ComponentProps = { style }
+
+      let props = { ...node.attributes, data: node.data }
+      if (passProps) {
+        props = { ...props, ...passProps }
+      }
+
+      const renderer = getRenderer(node.path)
+      if (renderer) {
+        return renderer(node, renderNodes, style, props)
+      }
+
+      switch (node.type) {
+        case 'text':
+          return <Text {...componentProps}>{node.data}</Text>
+        case 'touchable':
+          componentProps.onPress = () => handleLinkPress(node.attributes?.href)
+          return <TouchableOpacity {...componentProps}>{renderNodes(node.children)}</TouchableOpacity>
+        case 'image':
+          componentProps.source = { uri: node.attributes?.src }
+          // @ts-ignore
+          return <Image {...componentProps} />
+        case 'container':
+        default:
+          return <View {...componentProps}>{renderNodes(node.children)}</View>
+      }
+    },
+    [getRenderer, getStyle, styles, passProps, handleLinkPress]
   )
 
   const handleHtmlParse = useCallback(
@@ -90,29 +100,15 @@ const HTMLRenderer = memo(({ html, renderers, styles, passProps, onError, onLink
     [onError]
   )
 
-  const handleLinkPress = useCallback(
-    async (url: string) => {
-      if (onLinkPress) {
-        onLinkPress(url)
-      } else {
-        try {
-          await Linking.openURL(url)
-        } catch (err) {
-          onError(err)
-        }
-      }
-    },
-    [onLinkPress, onError]
-  )
-
   const renderedHtml = useMemo(() => parsedHtml && parsedHtml.map((node) => renderNode(node)), [parsedHtml])
 
   useEffect(() => {
     htmlToElement(html, handleHtmlParse)
   }, [html, handleHtmlParse])
 
-  // return <Fragment />
   return <Fragment>{renderedHtml}</Fragment>
 })
+
+HTMLRenderer.displayName = 'HTMLRenderer'
 
 export default HTMLRenderer
