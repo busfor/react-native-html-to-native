@@ -6,22 +6,6 @@
 
 ---
 
-# TODO:
-
-✅ Add default renderers and styles
-
-⬜️ Add default styles definitions
-
-⬜️ Add documentation
-
-✅ Add usage example
-
-⬜️ Complete example app
-
-✅ Add \<img> tag parsing
-
-⬜️ Add siblings handling
-
 ## Getting started
 
 `$ yarn add @busfor/react-native-html-to-native`
@@ -64,3 +48,23 @@ import HTML from '@busfor/react-native-html-to-native'
   html='<div><p>Paragraph</p><a class="link" href="https://www.google.com/">Link</a><img src="https://miro.medium.com/max/1200/1*mk1-6aYaf_Bes1E3Imhc0A.jpeg"/>'
 />
 ```
+
+# TODO:
+
+✅ Parse HTML into object structure
+
+✅ Render parsed nodes on screen
+
+✅ Add default renderers and styles
+
+⬜️ Add default styles definitions
+
+⬜️ Add documentation
+
+✅ Add usage example
+
+⬜️ Complete example app
+
+✅ Add \<img> tag parsing
+
+⬜️ Add siblings handling

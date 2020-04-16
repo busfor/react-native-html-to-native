@@ -1,7 +1,7 @@
 import React, { Fragment, ReactNode, memo, useState, useEffect, useCallback, useMemo } from 'react'
 import { Linking } from 'react-native'
 
-import type { HTMLRendererProps, ElementRenderer, NodeStyle } from './types'
+import type { HTMLRendererProps, ElementRenderer, NodeStyle, ElementProps } from './types'
 import Node from './node'
 import { htmlToElement } from './utils'
 import Defaults from './defaults'
@@ -59,16 +59,12 @@ const HTMLRenderer = memo(({ html, renderers, styles, passProps, onError, onLink
 
   const renderNode = useCallback(
     (node: Node): ReactNode => {
-      const renderNodes = (nodes?: Node[]) => nodes?.map((n) => <>{renderNode(n)}</>)
+      const renderNodes = (nodes?: Node[]) => nodes?.map((n) => renderNode(n))
 
       const style = getStyle(node.path)
-
-      let props = { ...node.attributes, data: node.data }
-      if (passProps) {
-        props = { ...props, ...passProps }
-      }
-
+      const props: ElementProps = { attributes: node.attributes, handleLinkPress, passProps }
       const renderer = getRenderer(node.path)
+
       if (renderer) {
         return renderer(node, renderNodes, style, props)
       }

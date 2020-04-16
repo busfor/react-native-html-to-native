@@ -9,16 +9,13 @@ export default () => (
       onError={(err) => console.log(err)}
       styles={styles}
       renderers={{
-        'a.link': (node, renderChildren, style, props) => {
-          console.log(node.children);
-          return (
-            <TouchableHighlight
-              onPress={() => console.log('Clicked', node.attributes.href)}
-              style={style}>
-              <>{renderChildren(node.children)}</>
-            </TouchableHighlight>
-          );
-        },
+        'a.link': (node, renderChildren, style, props) => (
+          <TouchableHighlight
+            onPress={() => console.log('Clicked', node.attributes.href)}
+            style={style}>
+            <>{renderChildren(node.children)}</>
+          </TouchableHighlight>
+        ),
       }}
       {...{html}}
     />

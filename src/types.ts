@@ -9,7 +9,7 @@ export interface HTMLRendererProps {
     [s: string]: ElementRenderer
   }
   styles?: { [s: string]: NodeStyle }
-  passProps: {
+  passProps?: {
     [s: string]: any
   }
   onError?(err: any): void
@@ -20,10 +20,16 @@ export type ElementRenderer = (
   node: Node,
   renderChildren: (nodes: Node[]) => ReactNode,
   style: NodeStyle,
-  props: {
+  props: ElementProps
+) => ReactNode
+
+export interface ElementProps {
+  attributes?: NodeAttributes
+  passProps?: {
     [s: string]: any
   }
-) => ReactNode
+  handleLinkPress(url: string): void
+}
 
 export interface NodeAttributes {
   [s: string]: any
