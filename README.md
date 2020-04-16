@@ -8,6 +8,10 @@
 
 # TODO:
 
+✅ Add default renderers and styles
+
+⬜️ Add default styles definitions
+
 ⬜️ Add documentation
 
 ✅ Add usage example

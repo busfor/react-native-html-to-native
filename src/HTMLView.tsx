@@ -1,8 +1,10 @@
 import React, { Fragment, ReactNode, memo, useState, useEffect, useCallback, useMemo } from 'react'
-import { View, Text, TouchableOpacity, Linking, StyleProp, ViewStyle, Image } from 'react-native'
+import { Linking } from 'react-native'
 
-import { HTMLRendererProps, Node, ComponentProps, ElementRenderer } from './types'
+import type { HTMLRendererProps, ElementRenderer, NodeStyle } from './types'
+import Node from './node'
 import { htmlToElement } from './utils'
+import Defaults from './defaults'
 
 const HTMLRenderer = memo(({ html, renderers, styles, passProps, onError, onLinkPress }: HTMLRendererProps) => {
   const [parsedHtml, setParsedHtml] = useState<Node[] | null>(null)
@@ -16,13 +18,13 @@ const HTMLRenderer = memo(({ html, renderers, styles, passProps, onError, onLink
           }
         }
       }
-      return null
+      return Defaults.renderers[path[path.length - 1]]
     },
     [renderers]
   )
 
   const getStyle = useCallback(
-    (path: string[]): StyleProp<ViewStyle> => {
+    (path: string[]): NodeStyle => {
       if (styles) {
         for (let i = 0, p; (p = path[i]); i++) {
           if (styles[p]) {
@@ -30,7 +32,7 @@ const HTMLRenderer = memo(({ html, renderers, styles, passProps, onError, onLink
           }
         }
       }
-      return {}
+      return Defaults.styles[path[path.length - 1]]
     },
     [styles]
   )
@@ -60,7 +62,6 @@ const HTMLRenderer = memo(({ html, renderers, styles, passProps, onError, onLink
       const renderNodes = (nodes?: Node[]) => nodes?.map((n) => <>{renderNode(n)}</>)
 
       const style = getStyle(node.path)
-      const componentProps: ComponentProps = { style }
 
       let props = { ...node.attributes, data: node.data }
       if (passProps) {
@@ -71,21 +72,7 @@ const HTMLRenderer = memo(({ html, renderers, styles, passProps, onError, onLink
       if (renderer) {
         return renderer(node, renderNodes, style, props)
       }
-
-      switch (node.type) {
-        case 'text':
-          return <Text {...componentProps}>{node.data}</Text>
-        case 'touchable':
-          componentProps.onPress = () => handleLinkPress(node.attributes?.href)
-          return <TouchableOpacity {...componentProps}>{renderNodes(node.children)}</TouchableOpacity>
-        case 'image':
-          componentProps.source = { uri: node.attributes?.src }
-          // @ts-ignore
-          return <Image {...componentProps} />
-        case 'container':
-        default:
-          return <View {...componentProps}>{renderNodes(node.children)}</View>
-      }
+      return null
     },
     [getRenderer, getStyle, styles, passProps, handleLinkPress]
   )
