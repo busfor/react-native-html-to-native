@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react'
-import { StyleSheet } from 'react-native'
+import { StyleProp } from 'react-native'
 
 import Node from './node'
 
@@ -35,4 +35,4 @@ export interface NodeAttributes {
   [s: string]: any
 }
 
-export type NodeStyle = StyleSheet.NamedStyles<any>
+export type NodeStyle = StyleProp<any>
