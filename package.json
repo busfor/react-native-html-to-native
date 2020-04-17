@@ -1,7 +1,7 @@
 {
   "name": "@busfor/react-native-html-to-native",
   "title": "React Native Html To Native",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Create customizable React Native views from HTML markup",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
