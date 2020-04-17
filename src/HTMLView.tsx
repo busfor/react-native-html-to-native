@@ -70,7 +70,7 @@ const HTMLRenderer = memo(({ html, renderers, styles, passProps, onError, onLink
       }
       return null
     },
-    [getRenderer, getStyle, styles, passProps, handleLinkPress]
+    [getRenderer, getStyle, passProps, handleLinkPress]
   )
 
   const handleHtmlParse = useCallback(
@@ -83,7 +83,7 @@ const HTMLRenderer = memo(({ html, renderers, styles, passProps, onError, onLink
     [onError]
   )
 
-  const renderedHtml = useMemo(() => parsedHtml && parsedHtml.map((node) => renderNode(node)), [parsedHtml])
+  const renderedHtml = useMemo(() => parsedHtml && parsedHtml.map((node) => renderNode(node)), [parsedHtml, renderNode])
 
   useEffect(() => {
     htmlToElement(html, handleHtmlParse)
