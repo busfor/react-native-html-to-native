@@ -17,7 +17,7 @@ export default () => (
           </TouchableHighlight>
         ),
       }}
-      {...{html}}
+     html={html}
     />
   </SafeAreaView>
 );
