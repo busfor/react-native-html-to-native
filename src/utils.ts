@@ -35,9 +35,9 @@ const domToNode = (dom: any | null, parent: Node | null = null): any => {
     })
 
     tempSelectors = [...selectors]
-    parent?.path.forEach((parentPath) => {
-      tempSelectors.forEach((path) => {
-        selectors.unshift(`${parentPath}>${path}`)
+    parent?.selectors.forEach((parentSelector) => {
+      tempSelectors.forEach((selector) => {
+        selectors.unshift(`${parentSelector}>${selector}`)
       })
     })
 

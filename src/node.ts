@@ -3,7 +3,7 @@ import type { NodeAttributes } from './types'
 export default class Node {
   constructor(
     props: { name?: string; data?: string },
-    path: string[],
+    selectors: string[],
     parent: Node | null,
     attributes: NodeAttributes
   ) {
@@ -11,7 +11,7 @@ export default class Node {
     this.attributes = attributes
     this.children = null
     this.siblings = null
-    this.path = path
+    this.selectors = selectors
     this.name = props.name
     this.data = props.data
   }
@@ -22,5 +22,5 @@ export default class Node {
   children: Node[] | null
   siblings: Node[] | null
   attributes?: NodeAttributes
-  path: string[]
+  selectors: string[]
 }

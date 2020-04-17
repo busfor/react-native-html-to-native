@@ -10,29 +10,29 @@ const HTMLRenderer = memo(({ html, renderers, styles, passProps, onError, onLink
   const [parsedHtml, setParsedHtml] = useState<Node[] | null>(null)
 
   const getRenderer = useCallback(
-    (path: string[]): ElementRenderer | null => {
+    (selectors: string[]): ElementRenderer | null => {
       if (renderers) {
-        for (let i = 0, p; (p = path[i]); i++) {
-          if (renderers[p]) {
-            return renderers[p]
+        for (let i = 0, selector; (selector = selectors[i]); i++) {
+          if (renderers[selector]) {
+            return renderers[selector]
           }
         }
       }
-      return Defaults.renderers[path[path.length - 1]]
+      return Defaults.renderers[selectors[selectors.length - 1]]
     },
     [renderers]
   )
 
   const getStyle = useCallback(
-    (path: string[]): NodeStyle => {
+    (selectors: string[]): NodeStyle => {
       if (styles) {
-        for (let i = 0, p; (p = path[i]); i++) {
-          if (styles[p]) {
-            return styles[p]
+        for (let i = 0, selector; (selector = selectors[i]); i++) {
+          if (styles[selector]) {
+            return styles[selector]
           }
         }
       }
-      return Defaults.styles[path[path.length - 1]]
+      return Defaults.styles[selectors[selectors.length - 1]]
     },
     [styles]
   )
@@ -61,9 +61,9 @@ const HTMLRenderer = memo(({ html, renderers, styles, passProps, onError, onLink
     (node: Node): ReactNode => {
       const renderNodes = (nodes?: Node[]) => nodes?.map((n) => renderNode(n))
 
-      const style = getStyle(node.path)
+      const style = getStyle(node.selectors)
       const props: ElementProps = { attributes: node.attributes, handleLinkPress, passProps }
-      const renderer = getRenderer(node.path)
+      const renderer = getRenderer(node.selectors)
 
       if (renderer) {
         return renderer(node, renderNodes, style, props)
