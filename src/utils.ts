@@ -35,7 +35,8 @@ const domToNode = (dom: any | null, parent: Node | null = null): any => {
     })
 
     tempSelectors = [...selectors]
-    parent?.selectors.reverse().forEach((parentSelector) => {
+    const parentSelectors = [...(parent?.selectors || [])].reverse()
+    parentSelectors.forEach((parentSelector) => {
       tempSelectors.forEach((selector) => {
         selectors.unshift(`${parentSelector}>${selector}`)
       })
