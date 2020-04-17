@@ -15,7 +15,7 @@
 ## Usage
 
 ```javascript
-import HTML from '@busfor/react-native-html-to-native'
+import { HTMLView } from '@busfor/react-native-html-to-native'
 ```
 
 ```jsx

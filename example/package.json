@@ -14,7 +14,7 @@
   "dependencies": {
     "react": "16.9.0",
     "react-native": "0.61.5",
-    "react-native-html-to-native": "file:../"
+    "@busfor/react-native-html-to-native": "file:../"
   },
   "devDependencies": {
     "@babel/core": "^7.9.0",

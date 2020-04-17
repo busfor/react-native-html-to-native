@@ -1,6 +1,6 @@
 import React from 'react';
 import {StyleSheet, SafeAreaView, TouchableHighlight} from 'react-native';
-import {HTMLView} from 'react-native-html-to-native';
+import {HTMLView} from '@busfor/react-native-html-to-native';
 
 export default () => (
   <SafeAreaView>
@@ -17,7 +17,7 @@ export default () => (
           </TouchableHighlight>
         ),
       }}
-     html={html}
+      html={html}
     />
   </SafeAreaView>
 );
