@@ -1,7 +1,10 @@
 // @ts-ignore
 import htmlparser from 'htmlparser2-without-node-native'
+import { AllHtmlEntities } from 'html-entities'
 
 import Node from './node'
+
+const entities = new AllHtmlEntities()
 
 export const htmlToElement = (rawHtml: string, done: (err: any, element?: any | null) => any): void => {
   const handler = new htmlparser.DomHandler((err: any, dom: any) => {
@@ -42,8 +45,13 @@ const domToNode = (dom: any | null, parent: Node | null = null): any => {
       })
     })
 
-    const nativeNode = new Node({ name: nodeName, data: node.data }, selectors, parent, node.attribs)
+    const nativeNode = new Node({ name: nodeName, data: entities.decode(node.data) }, selectors, parent, node.attribs)
     nativeNode.children = domToNode(node.children, nativeNode)
+    if (nativeNode.children) {
+      nativeNode.children.forEach((nodeChild) => {
+        nodeChild.siblings = nativeNode.children.filter((child) => child !== nodeChild)
+      })
+    }
 
     return nativeNode
   })

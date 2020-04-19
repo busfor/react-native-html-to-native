@@ -67,4 +67,4 @@ import { HTMLView } from '@busfor/react-native-html-to-native'
 
 ✅ Add \<img> tag parsing
 
-⬜️ Add siblings handling
+✅ Add siblings handling
