@@ -35,6 +35,7 @@
   },
   "devDependencies": {
     "@react-native-community/eslint-config": "^1.0.0",
+    "@types/htmlparser2": "^3.10.1",
     "@types/react": "^16.9.34",
     "@types/react-native": "^0.62.2",
     "@typescript-eslint/eslint-plugin": "^2.27.0",

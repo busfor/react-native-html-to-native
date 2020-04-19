@@ -32,7 +32,7 @@ export interface ElementProps {
 }
 
 export interface NodeAttributes {
-  [s: string]: any
+  [s: string]: string
 }
 
 export type NodeStyle = StyleProp<any>
