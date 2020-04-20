@@ -9,16 +9,56 @@ export default {
       <Text style={style}>{renderChildren(node.children)}</Text>
     </View>
   ),
-  h1: (node, renderChildren, style, _) => <Text style={style}>{renderChildren(node.children)}</Text>,
-  h2: (node, renderChildren, style, _) => <Text style={style}>{renderChildren(node.children)}</Text>,
-  h3: (node, renderChildren, style, _) => <Text style={style}>{renderChildren(node.children)}</Text>,
-  h4: (node, renderChildren, style, _) => <Text style={style}>{renderChildren(node.children)}</Text>,
-  h5: (node, renderChildren, style, _) => <Text style={style}>{renderChildren(node.children)}</Text>,
-  h6: (node, renderChildren, style, _) => <Text style={style}>{renderChildren(node.children)}</Text>,
-  b: (node, renderChildren, style, _) => <Text style={style}>{renderChildren(node.children)}</Text>,
-  i: (node, renderChildren, style, _) => <Text style={style}>{renderChildren(node.children)}</Text>,
-  u: (node, renderChildren, style, _) => <Text style={style}>{renderChildren(node.children)}</Text>,
-  li: (node, renderChildren, style, _) => <Text style={style}>{renderChildren(node.children)}</Text>,
+  h1: (node, renderChildren, style, _) => (
+    <Text key={node.selectors[0]} style={style}>
+      {renderChildren(node.children)}
+    </Text>
+  ),
+  h2: (node, renderChildren, style, _) => (
+    <Text key={node.selectors[0]} style={style}>
+      {renderChildren(node.children)}
+    </Text>
+  ),
+  h3: (node, renderChildren, style, _) => (
+    <Text key={node.selectors[0]} style={style}>
+      {renderChildren(node.children)}
+    </Text>
+  ),
+  h4: (node, renderChildren, style, _) => (
+    <Text key={node.selectors[0]} style={style}>
+      {renderChildren(node.children)}
+    </Text>
+  ),
+  h5: (node, renderChildren, style, _) => (
+    <Text key={node.selectors[0]} style={style}>
+      {renderChildren(node.children)}
+    </Text>
+  ),
+  h6: (node, renderChildren, style, _) => (
+    <Text key={node.selectors[0]} style={style}>
+      {renderChildren(node.children)}
+    </Text>
+  ),
+  b: (node, renderChildren, style, _) => (
+    <Text key={node.selectors[0]} style={style}>
+      {renderChildren(node.children)}
+    </Text>
+  ),
+  i: (node, renderChildren, style, _) => (
+    <Text key={node.selectors[0]} style={style}>
+      {renderChildren(node.children)}
+    </Text>
+  ),
+  u: (node, renderChildren, style, _) => (
+    <Text key={node.selectors[0]} style={style}>
+      {renderChildren(node.children)}
+    </Text>
+  ),
+  li: (node, renderChildren, style, _) => (
+    <Text key={node.selectors[0]} style={style}>
+      {renderChildren(node.children)}
+    </Text>
+  ),
   code: (node, renderChildren, style, _) => (
     <View key={node.selectors[0]} style={style}>
       <Text style={style}>{renderChildren(node.children)}</Text>
@@ -34,11 +74,31 @@ export default {
       <Text style={style}>{renderChildren(node.children)}</Text>
     </View>
   ),
-  strong: (node, renderChildren, style, _) => <Text style={style}>{renderChildren(node.children)}</Text>,
-  small: (node, renderChildren, style, _) => <Text style={style}>{renderChildren(node.children)}</Text>,
-  sub: (node, renderChildren, style, _) => <Text style={style}>{renderChildren(node.children)}</Text>,
-  abbr: (node, renderChildren, style, _) => <Text style={style}>{renderChildren(node.children)}</Text>,
-  address: (node, renderChildren, style, _) => <Text style={style}>{renderChildren(node.children)}</Text>,
+  strong: (node, renderChildren, style, _) => (
+    <Text key={node.selectors[0]} style={style}>
+      {renderChildren(node.children)}
+    </Text>
+  ),
+  small: (node, renderChildren, style, _) => (
+    <Text key={node.selectors[0]} style={style}>
+      {renderChildren(node.children)}
+    </Text>
+  ),
+  sub: (node, renderChildren, style, _) => (
+    <Text key={node.selectors[0]} style={style}>
+      {renderChildren(node.children)}
+    </Text>
+  ),
+  abbr: (node, renderChildren, style, _) => (
+    <Text key={node.selectors[0]} style={style}>
+      {renderChildren(node.children)}
+    </Text>
+  ),
+  address: (node, renderChildren, style, _) => (
+    <Text key={node.selectors[0]} style={style}>
+      {renderChildren(node.children)}
+    </Text>
+  ),
   blockquote: (node, renderChildren, style, _) => (
     <View key={node.selectors[0]} style={style}>
       <Text style={style}>{renderChildren(node.children)}</Text>
@@ -71,7 +131,7 @@ export default {
   },
   button: (node, renderChildren, style, _) => (
     <TouchableHighlight key={node.selectors[0]} style={style}>
-      {renderChildren(node.children)}
+      <Text style={style}>{renderChildren(node.children)}</Text>
     </TouchableHighlight>
   ),
   div: (node, renderChildren, style, _) => (
@@ -80,9 +140,9 @@ export default {
     </View>
   ),
   span: (node, renderChildren, style, _) => (
-    <View key={node.selectors[0]} style={style}>
+    <Text key={node.selectors[0]} style={style}>
       {renderChildren(node.children)}
-    </View>
+    </Text>
   ),
   section: (node, renderChildren, style, _) => (
     <View key={node.selectors[0]} style={style}>
@@ -140,16 +200,20 @@ export default {
       {renderChildren(node.children)}
     </View>
   ),
-  tr: (node, renderChildren, style, _) => <View style={style}>{renderChildren(node.children)}</View>,
-  td: (node, renderChildren, style, _) => (
+  tr: (node, renderChildren, style, _) => (
     <View key={node.selectors[0]} style={style}>
       {renderChildren(node.children)}
     </View>
   ),
-  th: (node, renderChildren, style, _) => (
-    <View key={node.selectors[0]} style={style}>
+  td: (node, renderChildren, style, _) => (
+    <Text key={node.selectors[0]} style={style}>
       {renderChildren(node.children)}
-    </View>
+    </Text>
+  ),
+  th: (node, renderChildren, style, _) => (
+    <Text key={node.selectors[0]} style={style}>
+      {renderChildren(node.children)}
+    </Text>
   ),
   head: (_, __, ___, ____) => null,
   canvas: (_, __, ___, ____) => null,

@@ -1,4 +1,3 @@
-// @ts-ignore
 import { Parser } from 'htmlparser2-without-node-native'
 import { DomHandler } from 'domhandler'
 import * as DomUtils from 'domutils'
@@ -81,10 +80,3 @@ const domToNode = (dom: DomNode[] | null, parent: Node | null = null): Node[] =>
     return nativeNode
   })
 }
-
-htmlToElement(
-  '<div><p>Paragraph</p></div><a class="link" href="Test">Link</a><img src="https://miro.medium.com/max/1200/1*mk1-6aYaf_Bes1E3Imhc0A.jpeg" /><p><a>Link</a> in text</p>',
-  (err, elements) => {
-    console.dir(elements, { depth: null })
-  }
-)
