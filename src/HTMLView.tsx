@@ -25,14 +25,17 @@ const HTMLRenderer = memo(
 
     const getStyle = useCallback(
       (selectors: string[]): NodeStyle => {
+        const reversedSelectors = [...selectors].reverse()
+        let style = Defaults.styles[reversedSelectors[0]] || {}
         if (styles) {
-          for (let i = 0, selector; (selector = selectors[i]); i++) {
+          for (let i = 0, selector; (selector = reversedSelectors[i]); i++) {
             if (styles[selector]) {
-              return styles[selector]
+              style = { ...style, ...styles[selector] }
             }
           }
         }
-        return Defaults.styles[selectors[selectors.length - 1]]
+
+        return style
       },
       [styles]
     )

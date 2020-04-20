@@ -11,7 +11,7 @@ export default () => (
       renderers={{
         'a.link': (node, renderChildren, style, props) => (
           <TouchableHighlight
-            onPress={() => console.log('Clicked', node.attributes.href)}
+            onPress={() => console.log('Clicked', props.attributes.href)}
             style={style}>
             <>{renderChildren(node.children)}</>
           </TouchableHighlight>
@@ -28,6 +28,7 @@ const html =
 const styles = StyleSheet.create({
   TextNode: {
     fontSize: 35,
+    color: 'green',
   },
   'a.link': {
     width: 100,

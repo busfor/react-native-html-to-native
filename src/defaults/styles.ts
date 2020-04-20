@@ -43,4 +43,5 @@ export default StyleSheet.create({
   button: {},
   a: {},
   img: {},
+  TextNode: {},
 }) as { [s: string]: NodeStyle }
