@@ -28,9 +28,9 @@ export const htmlToElement = (
 
 const domToNode = (dom: DomNode[] | null, parent: Node | null = null): Node[] => {
   if (!dom) return null
-  return dom.map((domNode: DomNode) => {
-    let nativeNode: Node = null
 
+  return dom.map((domNode: DomNode) => {
+    let nativeNode: Node
     if (DomUtils.isTag(domNode)) {
       const tag = domNode as DomElement
       const name = DomUtils.getName(tag)
@@ -68,14 +68,12 @@ const domToNode = (dom: DomNode[] | null, parent: Node | null = null): Node[] =>
           nodeChild.siblings = nativeNode.children.filter((child) => child !== nodeChild)
         })
       }
-    }
-
-    if (DomUtils.isText(domNode)) {
+    } else if (DomUtils.isText(domNode)) {
       const text = domNode as DomText
       const name = 'TextNode'
       const data = DomUtils.getText(text)
 
-      const selectors: string[] = []
+      const selectors: string[] = [name]
       const parentSelectors = [...(parent?.selectors || [])].reverse()
       parentSelectors.forEach((parentSelector) => {
         selectors.unshift(`${parentSelector}>${name}`)
@@ -87,7 +85,3 @@ const domToNode = (dom: DomNode[] | null, parent: Node | null = null): Node[] =>
     return nativeNode
   })
 }
-
-htmlToElement('<p>A</p><h1>a</h1>', (err, elements) => {
-  console.log(elements)
-})

@@ -8,7 +8,22 @@
   "scripts": {
     "build": "rm -rf ./dist && tsc",
     "version": "auto-changelog -p && git add CHANGELOG.md",
-    "postversion": "git push --tags && git push"
+    "postversion": "git push --tags && git push",
+    "rc:patch": "version --prepatch --preid rc",
+    "rc:minor": "version --preminor --preid rc",
+    "rc:major": "version --premajor --preid rc",
+    "rc:release": "version --prerelease --preid rc",
+    "postrc:patch": "publish --access public --tag next",
+    "postrc:minor": "publish --access public --tag next",
+    "postrc:major": "publish --access public --tag next",
+    "postrc:release": "publish --access public --tag next",
+    "release:patch": "version --patch",
+    "release:minor": "version --patch",
+    "release:major": "version --patch",
+    "postrelease:patch": "publish --access public",
+    "postrelease:minor": "publish --access public",
+    "postrelease:major": "publish --access public",
+    "prepublish": "build"
   },
   "repository": {
     "type": "git",
