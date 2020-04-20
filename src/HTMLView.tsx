@@ -34,7 +34,6 @@ const HTMLRenderer = memo(
             }
           }
         }
-
         return style
       },
       [styles]
@@ -60,8 +59,6 @@ const HTMLRenderer = memo(
       [onLinkPress, onError]
     )
 
-    const renderNodes = useCallback((nodes?: Node[]) => <Fragment>{nodes?.map((n) => renderNode(n))}</Fragment>, [])
-
     const renderNode = useCallback(
       (node: Node): ReactNode => {
         const style = getStyle(node.selectors)
@@ -73,8 +70,12 @@ const HTMLRenderer = memo(
         }
         return null
       },
-      [getRenderer, getStyle, passProps, handleLinkPress, renderNodes]
+      [getRenderer, getStyle, passProps, handleLinkPress]
     )
+
+    const renderNodes = useCallback((nodes?: Node[]) => <Fragment>{nodes?.map((n) => renderNode(n))}</Fragment>, [
+      renderNode,
+    ])
 
     const handleHtmlParse = useCallback(
       (err, parsed: Node[]) => {
