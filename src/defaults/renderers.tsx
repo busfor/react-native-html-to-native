@@ -6,7 +6,13 @@ import type { ElementRenderer } from '../types'
 export default {
   p: (node, renderChildren, style, _) => (
     <View key={node.selectors[0]} style={style}>
-      <Text style={style}>{renderChildren(node.children)}</Text>
+      {node.children.map((child) => {
+        if (child.type === 'text') {
+          return <Text style={style}>{renderChildren([child])}</Text>
+        } else {
+          return renderChildren([child])
+        }
+      })}
     </View>
   ),
   h1: (node, renderChildren, style, _) => (
@@ -56,22 +62,40 @@ export default {
   ),
   li: (node, renderChildren, style, _) => (
     <Text key={node.selectors[0]} style={style}>
-      {renderChildren(node.children)}
+      • {renderChildren(node.children)}
     </Text>
   ),
   code: (node, renderChildren, style, _) => (
     <View key={node.selectors[0]} style={style}>
-      <Text style={style}>{renderChildren(node.children)}</Text>
+      {node.children.map((child) => {
+        if (child.type === 'text') {
+          return <Text style={style}>{renderChildren([child])}</Text>
+        } else {
+          return renderChildren([child])
+        }
+      })}
     </View>
   ),
   nav: (node, renderChildren, style, _) => (
     <View key={node.selectors[0]} style={style}>
-      <Text style={style}>{renderChildren(node.children)}</Text>
+      {node.children.map((child) => {
+        if (child.type === 'text') {
+          return <Text style={style}>{renderChildren([child])}</Text>
+        } else {
+          return renderChildren([child])
+        }
+      })}
     </View>
   ),
   mark: (node, renderChildren, style, _) => (
     <View key={node.selectors[0]} style={style}>
-      <Text style={style}>{renderChildren(node.children)}</Text>
+      {node.children.map((child) => {
+        if (child.type === 'text') {
+          return <Text style={style}>{renderChildren([child])}</Text>
+        } else {
+          return renderChildren([child])
+        }
+      })}
     </View>
   ),
   strong: (node, renderChildren, style, _) => (
@@ -101,7 +125,13 @@ export default {
   ),
   blockquote: (node, renderChildren, style, _) => (
     <View key={node.selectors[0]} style={style}>
-      <Text style={style}>{renderChildren(node.children)}</Text>
+      {node.children.map((child) => {
+        if (child.type === 'text') {
+          return <Text style={style}>{renderChildren([child])}</Text>
+        } else {
+          return renderChildren([child])
+        }
+      })}
     </View>
   ),
   img: (node, __, style, props) => (
@@ -136,7 +166,13 @@ export default {
   ),
   div: (node, renderChildren, style, _) => (
     <View key={node.selectors[0]} style={style}>
-      {renderChildren(node.children)}
+      {node.children.map((child) => {
+        if (child.type === 'text') {
+          return <Text style={style}>{renderChildren([child])}</Text>
+        } else {
+          return renderChildren([child])
+        }
+      })}
     </View>
   ),
   span: (node, renderChildren, style, _) => (
@@ -146,63 +182,135 @@ export default {
   ),
   section: (node, renderChildren, style, _) => (
     <View key={node.selectors[0]} style={style}>
-      {renderChildren(node.children)}
+      {node.children.map((child) => {
+        if (child.type === 'text') {
+          return <Text style={style}>{renderChildren([child])}</Text>
+        } else {
+          return renderChildren([child])
+        }
+      })}
     </View>
   ),
   article: (node, renderChildren, style, _) => (
     <View key={node.selectors[0]} style={style}>
-      {renderChildren(node.children)}
+      {node.children.map((child) => {
+        if (child.type === 'text') {
+          return <Text style={style}>{renderChildren([child])}</Text>
+        } else {
+          return renderChildren([child])
+        }
+      })}
     </View>
   ),
   header: (node, renderChildren, style, _) => (
     <View key={node.selectors[0]} style={style}>
-      {renderChildren(node.children)}
+      {node.children.map((child) => {
+        if (child.type === 'text') {
+          return <Text style={style}>{renderChildren([child])}</Text>
+        } else {
+          return renderChildren([child])
+        }
+      })}
     </View>
   ),
   footer: (node, renderChildren, style, _) => (
     <View key={node.selectors[0]} style={style}>
-      {renderChildren(node.children)}
+      {node.children.map((child) => {
+        if (child.type === 'text') {
+          return <Text style={style}>{renderChildren([child])}</Text>
+        } else {
+          return renderChildren([child])
+        }
+      })}
     </View>
   ),
   main: (node, renderChildren, style, _) => (
     <View key={node.selectors[0]} style={style}>
-      {renderChildren(node.children)}
+      {node.children.map((child) => {
+        if (child.type === 'text') {
+          return <Text style={style}>{renderChildren([child])}</Text>
+        } else {
+          return renderChildren([child])
+        }
+      })}
     </View>
   ),
   thead: (node, renderChildren, style, _) => (
     <View key={node.selectors[0]} style={style}>
-      {renderChildren(node.children)}
+      {node.children.map((child) => {
+        if (child.type === 'text') {
+          return <Text style={style}>{renderChildren([child])}</Text>
+        } else {
+          return renderChildren([child])
+        }
+      })}
     </View>
   ),
   tbody: (node, renderChildren, style, _) => (
     <View key={node.selectors[0]} style={style}>
-      {renderChildren(node.children)}
+      {node.children.map((child) => {
+        if (child.type === 'text') {
+          return <Text style={style}>{renderChildren([child])}</Text>
+        } else {
+          return renderChildren([child])
+        }
+      })}
     </View>
   ),
   tfoot: (node, renderChildren, style, _) => (
     <View key={node.selectors[0]} style={style}>
-      {renderChildren(node.children)}
+      {node.children.map((child) => {
+        if (child.type === 'text') {
+          return <Text style={style}>{renderChildren([child])}</Text>
+        } else {
+          return renderChildren([child])
+        }
+      })}
     </View>
   ),
   hr: (_, __, style, ___) => <View style={style} />,
   ul: (node, renderChildren, style, _) => (
     <View key={node.selectors[0]} style={style}>
-      {renderChildren(node.children)}
+      {node.children.map((child) => {
+        if (child.type === 'text') {
+          return <Text style={style}>{renderChildren([child])}</Text>
+        } else {
+          return renderChildren([child])
+        }
+      })}
     </View>
   ),
   ol: (node, renderChildren, style, _) => (
     <View key={node.selectors[0]} style={style}>
-      {renderChildren(node.children)}
+      {node.children.map((child) => {
+        if (child.type === 'text') {
+          return <Text style={style}>{renderChildren([child])}</Text>
+        } else {
+          return renderChildren([child])
+        }
+      })}
     </View>
   ),
   table: (node, renderChildren, style, _) => (
     <View key={node.selectors[0]} style={style}>
-      {renderChildren(node.children)}
+      {node.children.map((child) => {
+        if (child.type === 'text') {
+          return <Text style={style}>{renderChildren([child])}</Text>
+        } else {
+          return renderChildren([child])
+        }
+      })}
     </View>
   ),
   tr: (node, renderChildren, style, _) => (
     <View key={node.selectors[0]} style={style}>
-      {renderChildren(node.children)}
+      {node.children.map((child) => {
+        if (child.type === 'text') {
+          return <Text style={style}>{renderChildren([child])}</Text>
+        } else {
+          return renderChildren([child])
+        }
+      })}
     </View>
   ),
   td: (node, renderChildren, style, _) => (

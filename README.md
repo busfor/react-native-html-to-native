@@ -137,6 +137,8 @@ Also feel free to fork and contribute by opening [Pull Request](https://github.c
 
 # TODO:
 
+⬜️ Rework rendering system
+
 ⬜️ Add proper default table render
 
 ⬜️ Add proper default lists render

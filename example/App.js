@@ -1,5 +1,10 @@
 import React from 'react';
-import {StyleSheet, SafeAreaView, TouchableHighlight, Text} from 'react-native';
+import {
+  StyleSheet,
+  SafeAreaView,
+  TouchableHighlight,
+  Text,
+} from 'react-native';
 import {HTMLView} from '@busfor/react-native-html-to-native';
 
 export default () => (
@@ -24,7 +29,7 @@ export default () => (
 );
 
 const html =
-  '<div><p>Paragraph</p></div><a class="link" href="Test">Link</a><img src="https://miro.medium.com/max/1200/1*mk1-6aYaf_Bes1E3Imhc0A.jpeg" /><p><a>Link</a> in text</p><a>Default link</a>';
+  '<div><p>Paragraph</p></div><a class="link" href="Test">Link</a><img src="https://miro.medium.com/max/1200/1*mk1-6aYaf_Bes1E3Imhc0A.jpeg" /><p><a>Link</a> in text</p><a>Default link</a><p><ul><li>Item</li><li>Item 2</li></ul></p>';
 
 const styles = StyleSheet.create({
   'a.link': {
@@ -33,13 +38,17 @@ const styles = StyleSheet.create({
   },
   a: {
     color: 'green',
-    fontSize: 50,
+    fontSize: 16,
   },
   img: {
     width: 300,
     height: 200,
   },
   p: {
-    fontSize: 30,
+    fontSize: 16,
+    alignItems: 'flex-end',
+  },
+  li: {
+    color: 'red',
   },
 });
