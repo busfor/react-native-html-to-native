@@ -1,3 +1,4 @@
+// @ts-ignore
 import { Parser } from 'htmlparser2-without-node-native'
 import { DomHandler } from 'domhandler'
 import * as DomUtils from 'domutils'
@@ -31,6 +32,7 @@ const domToNode = (dom: DomNode[] | null, parent: Node | null = null): Node[] =>
 
   return dom.map((domNode: DomNode) => {
     let nativeNode: Node
+    domNode.type
     if (DomUtils.isTag(domNode)) {
       const tag = domNode as DomElement
       const name = DomUtils.getName(tag)
@@ -60,7 +62,7 @@ const domToNode = (dom: DomNode[] | null, parent: Node | null = null): Node[] =>
         })
       })
 
-      nativeNode = new Node({ name, data }, selectors, parent, tag.attribs)
+      nativeNode = new Node('tag', { name, data }, selectors, parent, tag.attribs)
 
       if (DomUtils.hasChildren(tag)) {
         nativeNode.children = domToNode(DomUtils.getChildren(tag), nativeNode)
@@ -73,15 +75,16 @@ const domToNode = (dom: DomNode[] | null, parent: Node | null = null): Node[] =>
       const name = 'TextNode'
       const data = DomUtils.getText(text)
 
-      const selectors: string[] = [name]
-      const parentSelectors = [...(parent?.selectors || [])].reverse()
-      parentSelectors.forEach((parentSelector) => {
-        selectors.unshift(`${parentSelector}>${name}`)
-      })
-
-      nativeNode = new Node({ name, data }, selectors, parent, {})
+      nativeNode = new Node('text', { name, data }, [], parent, {})
     }
 
     return nativeNode
   })
 }
+
+htmlToElement(
+  '<div><p>Paragraph</p></div><a class="link" href="Test">Link</a><img src="https://miro.medium.com/max/1200/1*mk1-6aYaf_Bes1E3Imhc0A.jpeg" /><p><a>Link</a> in text</p>',
+  (err, elements) => {
+    console.dir(elements, { depth: null })
+  }
+)

@@ -3,11 +3,13 @@ import { StyleProp } from 'react-native'
 
 export class Node {
   constructor(
+    type: NodeType,
     props: { name?: string; data?: string },
     selectors: string[],
     parent: Node | null,
     attributes: NodeAttributes
   ) {
+    this.type = type
     this.parent = parent
     this.attributes = attributes
     this.children = null
@@ -17,6 +19,7 @@ export class Node {
     this.data = props.data
   }
 
+  type: NodeType
   data?: string
   name?: string
   parent: Node | null
@@ -25,6 +28,8 @@ export class Node {
   attributes?: NodeAttributes
   selectors: string[]
 }
+
+export type NodeType = 'text' | 'tag'
 
 export interface ParserOptions {
   normalizeWhitespace: boolean

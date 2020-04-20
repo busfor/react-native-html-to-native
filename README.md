@@ -23,19 +23,17 @@ import { HTMLView } from '@busfor/react-native-html-to-native'
   onLinkPress={(url) => console.log(url)}
   onError={(err) => console.log(err)}
   styles={{
-    TextNode: {
-      fontSize: 35,
-    },
     'a.link': {
       width: 100,
       height: 50,
-    },
-    'a.link>TextNode': {
       fontSize: 50,
     },
     img: {
       width: 300,
       height: 200,
+    },
+    a: {
+      color: 'green',
     },
   }
   renderers={{
@@ -91,16 +89,7 @@ import { HTMLView } from '@busfor/react-native-html-to-native'
 | **siblings**   | _Nodes_ which are siblings for current node(same DOM level)      | Array<_Node_>    |
 | **attributes** | HTML tag attributes of type _NodeAttributes_                     | _NodeAttributes_ |
 | **selectors**  | CSS-like selectors for _Node_ to be used in styles and renderers | Array\<string>   |
-
-**NOTE!** Nodes for text data have custom selector TextNode
-
-_Example:_
-
-```html
-<p>Example text</p>
-```
-
-After parsing styling and rendering of "Example text" could be done by using selectors _p>TextNode_ and _TextNode_
+| **type**       | Node type, _text_ or _tag_                                       | string           |
 
 ---
 
@@ -147,6 +136,10 @@ Feel free to report any bug or request any functionality you would like to be do
 Also feel free to fork and contribute by opening [Pull Request](https://github.com/busfor/react-native-html-to-native/compare). All pull requests will be reviewed and merged if everything is OK!
 
 # TODO:
+
+⬜️ Add proper default table render
+
+⬜️ Add proper default lists render
 
 ⬜️ Improve CSS selectors
 
