@@ -150,8 +150,6 @@ Also feel free to fork and contribute by opening [Pull Request](https://github.c
 
 ⬜️ Improve CSS selectors
 
-⬜️ Add default styles definitions
-
 ⬜️ Complete example app
 
 ⬜️ Add HTML parsing from URL
