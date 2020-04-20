@@ -12,7 +12,15 @@ export default StyleSheet.create({
   ol: {
     width: '100%',
   },
+  li: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+  },
   p: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+  },
+  TextWrap: {
     flexDirection: 'row',
     flexWrap: 'wrap',
   },

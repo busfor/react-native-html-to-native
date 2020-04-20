@@ -48,8 +48,5 @@ const styles = StyleSheet.create({
   li: {
     marginVertical: 4,
     marginLeft: 4,
-
-    flexDirection: 'row',
-    flexWrap: 'wrap',
   },
 });

@@ -61,7 +61,10 @@ const HTMLRenderer = memo(
 
     const renderNode = useCallback(
       (node: Node): ReactNode => {
-        const style = getStyle(node.selectors)
+        let style = getStyle(node.selectors)
+        if (node.children && node.children.some((child) => child.name !== 'TextNode')) {
+          style = { ...style, ...Defaults.styles.TextWrap }
+        }
         const props: ElementProps = { attributes: node.attributes, handleLinkPress, passProps }
         const renderer = getRenderer(node.selectors)
         if (renderer) {

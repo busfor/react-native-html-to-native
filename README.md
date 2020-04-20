@@ -146,6 +146,8 @@ Also feel free to fork and contribute by opening [Pull Request](https://github.c
 
 # TODO:
 
+⬜️ Add parsing progress indication and status
+
 ⬜️ Add proper default table render
 
 ⬜️ Add proper ordered lists indicators

@@ -5,11 +5,11 @@ import type { ElementRenderer } from '../types'
 
 export default {
   TextNode: (node, _, style, __) => {
-    if (node.parent && (node.parent.name === 'li' || node.parent.name === 'p')) {
+    if (node.siblings && node.siblings.some((sibling) => sibling.name !== 'TextNode')) {
       const wrapText = node.data?.split(' ')
       return (
         <>
-          {node.parent.name === 'li' && (
+          {node.parent && node.parent.name === 'li' && (
             <Text key={node.selectors[0]} style={style}>
               {'• '}
             </Text>
@@ -24,9 +24,16 @@ export default {
       )
     } else {
       return (
-        <Text key={node.selectors[0]} style={style}>
-          {node.data}
-        </Text>
+        <>
+          {node.parent && node.parent.name === 'li' && (
+            <Text key={node.selectors[0]} style={style}>
+              {'• '}
+            </Text>
+          )}
+          <Text key={node.selectors[0]} style={style}>
+            {node.data}
+          </Text>
+        </>
       )
     }
   },
