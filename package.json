@@ -1,13 +1,14 @@
 {
   "name": "@busfor/react-native-html-to-native",
   "title": "React Native Html To Native",
-  "version": "1.0.8",
+  "version": "1.0.9-rc.0",
   "description": "Create customizable React Native views from HTML markup",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
   "scripts": {
     "build": "rm -rf ./dist && tsc",
-    "version": "auto-changelog -p && git add CHANGELOG.md"
+    "version": "auto-changelog -p && git add CHANGELOG.md",
+    "postversion": "git push --tags && git push"
   },
   "repository": {
     "type": "git",
