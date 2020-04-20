@@ -141,22 +141,10 @@ Also feel free to fork and contribute by opening [Pull Request](https://github.c
 
 # TODO:
 
-✅ Parse HTML into object structure
-
-✅ Render parsed nodes on screen
-
-✅ Add default renderers and styles
+⬜️ Improve CSS selectors
 
 ⬜️ Add default styles definitions
 
-✅ Add documentation
-
-✅ Add usage example
-
 ⬜️ Complete example app
 
-✅ Add \<img> tag parsing
-
-✅ Add siblings handling
-
-✅ Add html entities decoding
+⬜️ Add HTML parsing from URL

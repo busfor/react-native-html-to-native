@@ -38,7 +38,29 @@ const domToNode = (dom: DomNode[] | null, parent: Node | null = null): Node[] =>
       const htmlClasses = DomUtils.getAttributeValue(tag, 'class')?.split(' ') || []
       const htmlIds = DomUtils.getAttributeValue(tag, 'id')?.split(' ') || []
 
-      nativeNode = new Node({ name, data }, [name], parent, tag.attribs)
+      const selectors: string[] = [name]
+      htmlClasses.forEach((htmlClass) => {
+        selectors.unshift(`.${htmlClass}`)
+        selectors.unshift(`${name}.${htmlClass}`)
+      })
+
+      let tempSelectors = [...selectors]
+      htmlIds.forEach((htmlId) => {
+        selectors.unshift(`#${htmlId}`)
+        tempSelectors.forEach((selector) => {
+          selectors.unshift(`${selector}#${htmlId}`)
+        })
+      })
+
+      tempSelectors = [...selectors]
+      const parentSelectors = [...(parent?.selectors || [])].reverse()
+      parentSelectors.forEach((parentSelector) => {
+        tempSelectors.forEach((selector) => {
+          selectors.unshift(`${parentSelector}>${selector}`)
+        })
+      })
+
+      nativeNode = new Node({ name, data }, selectors, parent, tag.attribs)
 
       if (DomUtils.hasChildren(tag)) {
         nativeNode.children = domToNode(DomUtils.getChildren(tag), nativeNode)
@@ -53,30 +75,14 @@ const domToNode = (dom: DomNode[] | null, parent: Node | null = null): Node[] =>
       const name = 'TextNode'
       const data = DomUtils.getText(text)
 
-      nativeNode = new Node({ name, data }, [name], parent, {})
+      const selectors: string[] = []
+      const parentSelectors = [...(parent?.selectors || [])].reverse()
+      parentSelectors.forEach((parentSelector) => {
+        selectors.unshift(`${parentSelector}>${name}`)
+      })
+
+      nativeNode = new Node({ name, data }, selectors, parent, {})
     }
-
-    // const selectors: string[] = [nodeName]
-    // htmlClasses.forEach((htmlClass) => {
-    //   selectors.unshift(`.${htmlClass}`)
-    //   selectors.unshift(`${nodeName}.${htmlClass}`)
-    // })
-
-    // let tempSelectors = [...selectors]
-    // htmlIds.forEach((htmlId) => {
-    //   selectors.unshift(`#${htmlId}`)
-    //   tempSelectors.forEach((selector) => {
-    //     selectors.unshift(`${selector}#${htmlId}`)
-    //   })
-    // })
-
-    // tempSelectors = [...selectors]
-    // const parentSelectors = [...(parent?.selectors || [])].reverse()
-    // parentSelectors.forEach((parentSelector) => {
-    //   tempSelectors.forEach((selector) => {
-    //     selectors.unshift(`${parentSelector}>${selector}`)
-    //   })
-    // })
 
     return nativeNode
   })
