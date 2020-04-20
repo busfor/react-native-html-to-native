@@ -53,25 +53,41 @@ import { HTMLView } from '@busfor/react-native-html-to-native'
 
 ## Properties
 
-| Name            | Description                              |            |
-| --------------- | ---------------------------------------- | ---------- |
-| **html**        | Raw HTML code to be parsed and presented | _required_ |
-| **renderers**   | HTML nodes render functions              | _optional_ |
-| **passProps**   | Custom props passed to node renderer     | _optional_ |
-| **styles**      | Custom node styles                       | _optional_ |
-| **onError**     | Error callback function                  | _optional_ |
-| **onLinkPress** | Link press callback function             | _optional_ |
+| Name              | Description                              | Type            |
+| ----------------- | ---------------------------------------- | --------------- |
+| **html\***        | Raw HTML code to be parsed and presented | string          |
+| **renderers**     | HTML nodes render functions              | Object          |
+| **passProps**     | Custom props passed to node renderer     | Object          |
+| **styles**        | Custom node styles                       | Object          |
+| **onError**       | Error callback function                  | Function        |
+| **onLinkPress**   | Link press callback function             | Function        |
+| **parserOptions** | Parser options, see _ParserOptions_ type | _ParserOptions_ |
+
+\* - required property
 
 ## Types
 
+**ParserOptions**
+
+| Option                   | Description                                                     | Type    | Default |
+| ------------------------ | --------------------------------------------------------------- | ------- | ------- |
+| **normalizeWhitespace**  | Indicates whether whitespace in text nodes should be normalized | boolean | _false_ |
+| **recognizeSelfClosing** | Recognize self-closing HTML tags                                | boolean | _true_  |
+| **decodeEntities**       | If set to true, entities within HTML code will be decoded       | boolean | _true_  |
+
+---
+
 **Node** - object which describes HTML node
 
-_data_ - text data(for texts inside \<p>, \<h1> and other text tags)
-_name_ - tag name(fot tags)
-_parent_ - parent **Node**
-_siblings_ - **nodes** which are siblings for current **Node**(same DOM level)
-_attributes_ - HTML tag attributes of type **NodeAttributes**
-_selectors_ - CSS selectors for nodes to be used in styles or renderers
+| Parameter      | Description                                                      | Type             |
+| -------------- | ---------------------------------------------------------------- | ---------------- |
+| **data**       | Text data for text nodes, undefined otherwise                    | string           |
+| **name**       | Tag name for HTML tags, _TextNode_ for textual nodes             | string           |
+| **parent**     | Parent _Node_                                                    | _Node_           |
+| **children**   | Children _nodes_                                                 | Array<_Node_>    |
+| **siblings**   | _Nodes_ which are siblings for current node(same DOM level)      | Array<_Node_>    |
+| **attributes** | HTML tag attributes of type _NodeAttributes_                     | _NodeAttributes_ |
+| **selectors**  | CSS-like selectors for _Node_ to be used in styles and renderers | Array\<string>   |
 
 **NOTE!** Nodes for text data have custom selector TextNode
 
@@ -85,7 +101,7 @@ After parsing styling and rendering of "Example text" could be done by using sel
 
 ---
 
-**NodeStyle** - object of _selector : style_, possibly created with StyleSheet.create
+**NodeStyle** - object of _selector : style_ key-values, possibly created with StyleSheet.create
 
 ---
 

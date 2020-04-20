@@ -1,63 +1,87 @@
-import htmlparser from 'htmlparser2-without-node-native'
-import type { DomElement } from 'htmlparser2-without-node-native'
-import { AllHtmlEntities } from 'html-entities'
+import { Parser } from 'htmlparser2-without-node-native'
+import { DomHandler } from 'domhandler'
+import * as DomUtils from 'domutils'
+import type { Node as DomNode, Element as DomElement, DataNode as DomText } from 'domhandler'
 
-import Node from './node'
+import { Node, ParserOptions } from './types'
 
-const entities = new AllHtmlEntities()
+export const htmlToElement = (
+  rawHtml: string,
+  done: (err: Error, element?: Node[] | null) => void,
+  parserOptions?: ParserOptions
+): void => {
+  const handler = new DomHandler(
+    (err, dom) => {
+      if (err) done(err)
+      done(null, domToNode(dom))
+    },
+    { normalizeWhitespace: parserOptions?.normalizeWhitespace || false }
+  )
 
-export const htmlToElement = (rawHtml: string, done: (err: any, element?: any | null) => any): void => {
-  const handler = new htmlparser.DomHandler((err, dom) => {
-    if (err) done(err)
-    done(null, domToNode(dom))
+  const parser = new Parser(handler, {
+    decodeEntities: parserOptions?.decodeEntities || true,
+    recognizeSelfClosing: parserOptions?.recognizeSelfClosing || true,
   })
-  const parser = new htmlparser.Parser(handler)
   parser.write(rawHtml)
   parser.done()
 }
 
-const domToNode = (dom: DomElement[] | null, parent: Node | null = null): any => {
+const domToNode = (dom: DomNode[] | null, parent: Node | null = null): Node[] => {
   if (!dom) return null
-  return dom.map((domElement: DomElement) => {
-    const nodeName = domElement.name || 'TextNode'
-    const htmlClasses: string[] = domElement.attribs?.class?.split(' ') || []
-    const htmlIds: string[] = domElement.attribs?.id?.split(' ') || []
+  return dom.map((domNode: DomNode) => {
+    let nativeNode: Node = null
 
-    const selectors: string[] = [nodeName]
-    htmlClasses.forEach((htmlClass) => {
-      selectors.unshift(`.${htmlClass}`)
-      selectors.unshift(`${nodeName}.${htmlClass}`)
-    })
+    if (DomUtils.isTag(domNode)) {
+      const tag = domNode as DomElement
+      const name = DomUtils.getName(tag)
+      const data: string = undefined
+      const htmlClasses = DomUtils.getAttributeValue(tag, 'class')?.split(' ') || []
+      const htmlIds = DomUtils.getAttributeValue(tag, 'id')?.split(' ') || []
 
-    let tempSelectors = [...selectors]
-    htmlIds.forEach((htmlId) => {
-      selectors.unshift(`#${htmlId}`)
-      tempSelectors.forEach((selector) => {
-        selectors.unshift(`${selector}#${htmlId}`)
-      })
-    })
+      nativeNode = new Node({ name, data }, [name], parent, tag.attribs)
 
-    tempSelectors = [...selectors]
-    const parentSelectors = [...(parent?.selectors || [])].reverse()
-    parentSelectors.forEach((parentSelector) => {
-      tempSelectors.forEach((selector) => {
-        selectors.unshift(`${parentSelector}>${selector}`)
-      })
-    })
-
-    const nativeNode = new Node(
-      { name: nodeName, data: entities.decode(domElement.data) },
-      selectors,
-      parent,
-      domElement.attribs
-    )
-    nativeNode.children = domToNode(domElement.children, nativeNode)
-    if (nativeNode.children) {
-      nativeNode.children.forEach((nodeChild) => {
-        nodeChild.siblings = nativeNode.children.filter((child) => child !== nodeChild)
-      })
+      if (DomUtils.hasChildren(tag)) {
+        nativeNode.children = domToNode(DomUtils.getChildren(tag), nativeNode)
+        nativeNode.children.forEach((nodeChild) => {
+          nodeChild.siblings = nativeNode.children.filter((child) => child !== nodeChild)
+        })
+      }
     }
+
+    if (DomUtils.isText(domNode)) {
+      const text = domNode as DomText
+      const name = 'TextNode'
+      const data = DomUtils.getText(text)
+
+      nativeNode = new Node({ name, data }, [name], parent, {})
+    }
+
+    // const selectors: string[] = [nodeName]
+    // htmlClasses.forEach((htmlClass) => {
+    //   selectors.unshift(`.${htmlClass}`)
+    //   selectors.unshift(`${nodeName}.${htmlClass}`)
+    // })
+
+    // let tempSelectors = [...selectors]
+    // htmlIds.forEach((htmlId) => {
+    //   selectors.unshift(`#${htmlId}`)
+    //   tempSelectors.forEach((selector) => {
+    //     selectors.unshift(`${selector}#${htmlId}`)
+    //   })
+    // })
+
+    // tempSelectors = [...selectors]
+    // const parentSelectors = [...(parent?.selectors || [])].reverse()
+    // parentSelectors.forEach((parentSelector) => {
+    //   tempSelectors.forEach((selector) => {
+    //     selectors.unshift(`${parentSelector}>${selector}`)
+    //   })
+    // })
 
     return nativeNode
   })
 }
+
+htmlToElement('<p>A</p><h1>a</h1>', (err, elements) => {
+  console.log(elements)
+})

@@ -1,22 +1,5 @@
 declare module 'htmlparser2-without-node-native' {
-  // Type definitions for htmlparser2 v3.10.x
-  // Project: https://github.com/fb55/htmlparser2/
-  // Definitions by: James Roland Cabresos <https://github.com/staticfunction>
-  //                 Linus Unnebäck <https://github.com/LinusU>
-  //                 Johan Davidsson <https://github.com/johandavidson>
-  //                 GP <https://github.com/paambaati>
-  // Definitions: https://github.com/DefinitelyTyped/DefinitelyTyped
-  // TypeScript Version: 2.2
-
-  ///<reference types="node"/>
-  ///<reference types="domhandler"/>
-  ///<reference types="domutils"/>
-
-  import { DomHandler } from 'domhandler'
-  import * as DomUtils from 'domutils'
-
-  import { Writable } from 'stream'
-  export { DomElement, DomHandlerOptions, DomHandler, Element, Node } from 'domhandler'
+  import type { DomHandler } from 'domhandler'
 
   export interface ParserOptions {
     /***
@@ -53,14 +36,6 @@ declare module 'htmlparser2-without-node-native' {
      * NOTE: If xmlMode is set to true then self-closing tags will always be recognized.
      */
     recognizeSelfClosing?: boolean
-  }
-  /**
-   * @deprecated
-   */
-  export type Options = ParserOptions
-
-  export class WritableStream extends Writable {
-    constructor(handler: DomHandler, options?: ParserOptions)
   }
 
   export class Parser {
@@ -127,6 +102,4 @@ declare module 'htmlparser2-without-node-native' {
     onerror(err: Error): void
     onend(): void
   }
-
-  export { DomUtils }
 }

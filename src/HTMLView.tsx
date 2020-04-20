@@ -1,96 +1,100 @@
 import React, { Fragment, ReactNode, memo, useState, useEffect, useCallback, useMemo } from 'react'
 import { Linking } from 'react-native'
 
-import type { HTMLRendererProps, ElementRenderer, NodeStyle, ElementProps } from './types'
-import Node from './node'
+import type { HTMLRendererProps, ElementRenderer, NodeStyle, ElementProps, Node } from './types'
 import { htmlToElement } from './utils'
 import Defaults from './defaults'
 
-const HTMLRenderer = memo(({ html, renderers, styles, passProps, onError, onLinkPress }: HTMLRendererProps) => {
-  const [parsedHtml, setParsedHtml] = useState<Node[] | null>(null)
+const HTMLRenderer = memo(
+  ({ html, renderers, styles, passProps, onError, onLinkPress, parserOptions }: HTMLRendererProps) => {
+    const [parsedHtml, setParsedHtml] = useState<Node[] | null>(null)
 
-  const getRenderer = useCallback(
-    (selectors: string[]): ElementRenderer | null => {
-      if (renderers) {
-        for (let i = 0, selector; (selector = selectors[i]); i++) {
-          if (renderers[selector]) {
-            return renderers[selector]
+    const getRenderer = useCallback(
+      (selectors: string[]): ElementRenderer | null => {
+        if (renderers) {
+          for (let i = 0, selector; (selector = selectors[i]); i++) {
+            if (renderers[selector]) {
+              return renderers[selector]
+            }
           }
         }
-      }
-      return Defaults.renderers[selectors[selectors.length - 1]]
-    },
-    [renderers]
-  )
+        return Defaults.renderers[selectors[selectors.length - 1]]
+      },
+      [renderers]
+    )
 
-  const getStyle = useCallback(
-    (selectors: string[]): NodeStyle => {
-      if (styles) {
-        for (let i = 0, selector; (selector = selectors[i]); i++) {
-          if (styles[selector]) {
-            return styles[selector]
+    const getStyle = useCallback(
+      (selectors: string[]): NodeStyle => {
+        if (styles) {
+          for (let i = 0, selector; (selector = selectors[i]); i++) {
+            if (styles[selector]) {
+              return styles[selector]
+            }
           }
         }
-      }
-      return Defaults.styles[selectors[selectors.length - 1]]
-    },
-    [styles]
-  )
+        return Defaults.styles[selectors[selectors.length - 1]]
+      },
+      [styles]
+    )
 
-  const handleLinkPress = useCallback(
-    async (url?: string) => {
-      if (!url) {
-        return
-      }
-      if (onLinkPress) {
-        onLinkPress(url)
-      } else {
-        try {
-          await Linking.openURL(url)
-        } catch (err) {
-          if (onError) {
-            onError(err)
+    const handleLinkPress = useCallback(
+      async (url?: string) => {
+        if (!url) {
+          return
+        }
+        if (onLinkPress) {
+          onLinkPress(url)
+        } else {
+          try {
+            await Linking.openURL(url)
+          } catch (err) {
+            if (onError) {
+              onError(err)
+            }
           }
         }
-      }
-    },
-    [onLinkPress, onError]
-  )
+      },
+      [onLinkPress, onError]
+    )
 
-  const renderNode = useCallback(
-    (node: Node): ReactNode => {
-      const renderNodes = (nodes?: Node[]) => nodes?.map((n) => renderNode(n))
+    const renderNode = useCallback(
+      (node: Node): ReactNode => {
+        const renderNodes = (nodes?: Node[]) => nodes?.map((n) => renderNode(n))
 
-      const style = getStyle(node.selectors)
-      const props: ElementProps = { attributes: node.attributes, handleLinkPress, passProps }
-      const renderer = getRenderer(node.selectors)
+        const style = getStyle(node.selectors)
+        const props: ElementProps = { attributes: node.attributes, handleLinkPress, passProps }
+        const renderer = getRenderer(node.selectors)
 
-      if (renderer) {
-        return renderer(node, renderNodes, style, props)
-      }
-      return null
-    },
-    [getRenderer, getStyle, passProps, handleLinkPress]
-  )
+        if (renderer) {
+          return renderer(node, renderNodes, style, props)
+        }
+        return null
+      },
+      [getRenderer, getStyle, passProps, handleLinkPress]
+    )
 
-  const handleHtmlParse = useCallback(
-    (err, parsed: Node[]) => {
-      if (err && onError) {
-        onError(err)
-      }
-      setParsedHtml(parsed)
-    },
-    [onError]
-  )
+    const handleHtmlParse = useCallback(
+      (err, parsed: Node[]) => {
+        if (err && onError) {
+          onError(err)
+        }
+        setParsedHtml(parsed)
+      },
+      [onError]
+    )
 
-  const renderedHtml = useMemo(() => parsedHtml && parsedHtml.map((node) => renderNode(node)), [parsedHtml, renderNode])
+    const renderedHtml = useMemo(() => parsedHtml && parsedHtml.map((node) => renderNode(node)), [
+      parsedHtml,
+      renderNode,
+    ])
 
-  useEffect(() => {
-    htmlToElement(html, handleHtmlParse)
-  }, [html, handleHtmlParse])
+    useEffect(() => {
+      htmlToElement(html, handleHtmlParse, parserOptions)
+    }, [html, handleHtmlParse, parserOptions])
 
-  return <Fragment>{renderedHtml}</Fragment>
-})
+    return <Fragment>{renderedHtml}</Fragment>
+  }
+)
 
 HTMLRenderer.displayName = 'HTMLRenderer'
 
