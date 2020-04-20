@@ -3,65 +3,51 @@ import { StyleSheet } from 'react-native'
 import type { NodeStyle } from '../types'
 
 export default StyleSheet.create({
+  TextNode: {
+    fontSize: 12,
+  },
+  ul: {
+    width: '100%',
+  },
+  ol: {
+    width: '100%',
+  },
   p: {
     flexDirection: 'row',
     flexWrap: 'wrap',
-    fontSize: 12,
   },
-  h1: {
+  'h1>TextNode': {
     fontSize: 24,
   },
-  h2: {
+  'h2>TextNode': {
     fontSize: 20,
   },
-  h3: {
+  'h3>TextNode': {
     fontSize: 18,
   },
-  h4: {
+  'h4>TextNode': {
     fontSize: 16,
   },
-  h5: {
+  'h5>TextNode': {
     fontSize: 14,
   },
-  h6: {
+  'h6>TextNode': {
     fontSize: 10,
   },
-  b: {
-    fontSize: 12,
+  'b>TextNode': {
     fontWeight: 'bold',
   },
-  strong: {
-    fontSize: 12,
+  'strong>TextNode': {
     fontWeight: 'bold',
   },
-  small: {
+  'small>TextNode': {
     fontSize: 8,
   },
-  i: {
-    fontSize: 12,
+  'i>TextNode': {
     fontStyle: 'italic',
   },
-  u: {
-    fontSize: 12,
+  'u>TextNode': {
     textDecorationLine: 'underline',
-  },
-  li: {
-    fontSize: 12,
-  },
-  nav: {
-    fontSize: 12,
-  },
-  mark: {
-    fontSize: 12,
-  },
-  sub: {
-    fontSize: 12,
-  },
-  abbr: {
-    fontSize: 12,
-  },
-  address: {
-    fontSize: 12,
   },
   code: {
     flexDirection: 'row',
@@ -71,7 +57,6 @@ export default StyleSheet.create({
     borderWidth: StyleSheet.hairlineWidth,
     borderColor: 'black',
     width: '100%',
-    fontSize: 12,
   },
   blockquote: {
     flexDirection: 'row',
@@ -81,7 +66,6 @@ export default StyleSheet.create({
     borderWidth: StyleSheet.hairlineWidth,
     borderColor: 'black',
     width: '100%',
-    fontSize: 12,
   },
   tr: {
     flexDirection: 'row',
@@ -115,8 +99,7 @@ export default StyleSheet.create({
     width: 100,
     height: 100,
   },
-  a: {
-    fontSize: 12,
+  'a>TextNode': {
     color: 'blue',
   },
 }) as { [s: string]: NodeStyle }

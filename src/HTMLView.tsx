@@ -61,8 +61,6 @@ const HTMLRenderer = memo(
 
     const renderNode = useCallback(
       (node: Node): ReactNode => {
-        if (node.type === 'text') return node.data
-
         const style = getStyle(node.selectors)
         const props: ElementProps = { attributes: node.attributes, handleLinkPress, passProps }
         const renderer = getRenderer(node.selectors)

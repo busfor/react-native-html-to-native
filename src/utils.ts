@@ -61,7 +61,7 @@ const domToNode = (dom: DomNode[] | null, parent: Node | null = null): Node[] =>
         })
       })
 
-      nativeNode = new Node('tag', { name, data }, selectors, parent, tag.attribs)
+      nativeNode = new Node({ name, data }, selectors, parent, tag.attribs)
 
       if (DomUtils.hasChildren(tag)) {
         nativeNode.children = domToNode(DomUtils.getChildren(tag), nativeNode)
@@ -74,7 +74,12 @@ const domToNode = (dom: DomNode[] | null, parent: Node | null = null): Node[] =>
       const name = 'TextNode'
       const data = DomUtils.getText(text)
 
-      nativeNode = new Node('text', { name, data }, [], parent, {})
+      const selectors: string[] = [name]
+      const parentSelectors = [...(parent?.selectors || [])].reverse()
+      parentSelectors.forEach((parentSelector) => {
+        selectors.unshift(`${parentSelector}>${name}`)
+      })
+      nativeNode = new Node({ name, data }, selectors, parent, {})
     }
 
     return nativeNode

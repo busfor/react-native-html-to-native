@@ -89,7 +89,16 @@ import { HTMLView } from '@busfor/react-native-html-to-native'
 | **siblings**   | _Nodes_ which are siblings for current node(same DOM level)      | Array<_Node_>    |
 | **attributes** | HTML tag attributes of type _NodeAttributes_                     | _NodeAttributes_ |
 | **selectors**  | CSS-like selectors for _Node_ to be used in styles and renderers | Array\<string>   |
-| **type**       | Node type, _text_ or _tag_                                       | string           |
+
+**NOTE!** Nodes for text data have custom selector TextNode
+
+_Example:_
+
+```html
+<p>Example text</p>
+```
+
+After parsing styling and rendering of "Example text" could be done by using selectors _p>TextNode_ and _TextNode_
 
 ---
 
@@ -137,11 +146,9 @@ Also feel free to fork and contribute by opening [Pull Request](https://github.c
 
 # TODO:
 
-⬜️ Rework rendering system
-
 ⬜️ Add proper default table render
 
-⬜️ Add proper default lists render
+⬜️ Add proper ordered lists indicators
 
 ⬜️ Improve CSS selectors
 
