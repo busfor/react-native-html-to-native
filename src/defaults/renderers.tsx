@@ -5,22 +5,30 @@ import type { ElementRenderer } from '../types'
 
 export default {
   TextNode: (node, _, style, __) => {
-    const wrapText = node.data?.split(' ')
-    return (
-      <>
-        {node.parent.name === 'li' && (
-          <Text key={node.selectors[0]} style={style}>
-            {'• '}
-          </Text>
-        )}
-        {wrapText.map((text, index) => (
-          <Text key={node.selectors[0]} style={style}>
-            {text}
-            {index !== wrapText.length - 1 && ' '}
-          </Text>
-        ))}
-      </>
-    )
+    if (node.parent && (node.parent.name === 'li' || node.parent.name === 'p')) {
+      const wrapText = node.data?.split(' ')
+      return (
+        <>
+          {node.parent.name === 'li' && (
+            <Text key={node.selectors[0]} style={style}>
+              {'• '}
+            </Text>
+          )}
+          {wrapText.map((text, index) => (
+            <Text key={node.selectors[0]} style={style}>
+              {text}
+              {index !== wrapText.length - 1 && ' '}
+            </Text>
+          ))}
+        </>
+      )
+    } else {
+      return (
+        <Text key={node.selectors[0]} style={style}>
+          {node.data}
+        </Text>
+      )
+    }
   },
   p: (node, renderChildren, style, _) => (
     <View key={node.selectors[0]} style={style}>
