@@ -60,10 +60,10 @@ const HTMLRenderer = memo(
       [onLinkPress, onError]
     )
 
+    const renderNodes = useCallback((nodes?: Node[]) => <Fragment>{nodes?.map((n) => renderNode(n))}</Fragment>, [])
+
     const renderNode = useCallback(
       (node: Node): ReactNode => {
-        const renderNodes = (nodes?: Node[]) => nodes?.map((n) => renderNode(n))
-
         const style = getStyle(node.selectors)
         const props: ElementProps = { attributes: node.attributes, handleLinkPress, passProps }
         const renderer = getRenderer(node.selectors)
@@ -73,7 +73,7 @@ const HTMLRenderer = memo(
         }
         return null
       },
-      [getRenderer, getStyle, passProps, handleLinkPress]
+      [getRenderer, getStyle, passProps, handleLinkPress, renderNodes]
     )
 
     const handleHtmlParse = useCallback(
@@ -86,10 +86,7 @@ const HTMLRenderer = memo(
       [onError]
     )
 
-    const renderedHtml = useMemo(() => parsedHtml && parsedHtml.map((node) => renderNode(node)), [
-      parsedHtml,
-      renderNode,
-    ])
+    const renderedHtml = useMemo(() => parsedHtml && renderNodes(parsedHtml), [parsedHtml, renderNodes])
 
     useEffect(() => {
       htmlToElement(html, handleHtmlParse, parserOptions)

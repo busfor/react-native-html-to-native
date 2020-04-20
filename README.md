@@ -40,7 +40,10 @@ import { HTMLView } from '@busfor/react-native-html-to-native'
   }
   renderers={{
     'a.link': (node, renderChildren, style, props) => (
-      <TouchableHighlight onPress={() => console.log('Clicked', node.attributes.href)} style={style}>
+      <TouchableHighlight
+        key={node.selectors[0]}
+        onPress={() => console.log('Clicked', props.attributes.href)}
+        style={style}>
         {renderChildren(node.children)}
       </TouchableHighlight>
     ),
@@ -116,6 +119,10 @@ Function for rendering html node as native components
 Should accept _node_ of type _Node_, _renderChildren_ function for rendering node's children, _style_ of type **NodeStyle** and _props_ of type **ElementProps**
 
 Should return **ReactNode**
+
+**NOTE!**
+
+_Good practice_: Set **key** property for render component to _node.selectors[0]_ as it is most accurate CSS selector(tag path) to rendering node. See usage example above.
 
 ---
 

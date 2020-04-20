@@ -11,9 +11,10 @@ export default () => (
       renderers={{
         'a.link': (node, renderChildren, style, props) => (
           <TouchableHighlight
+            key={node.selectors[0]}
             onPress={() => console.log('Clicked', props.attributes.href)}
             style={style}>
-            <>{renderChildren(node.children)}</>
+            {renderChildren(node.children)}
           </TouchableHighlight>
         ),
       }}
