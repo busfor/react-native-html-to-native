@@ -72,9 +72,10 @@ const HTMLRenderer = memo(
       [getRenderer, getStyle, passProps, handleLinkPress]
     )
 
-    const renderNodes = useCallback((nodes?: Node[]) => <Fragment>{nodes?.map((n) => renderNode(n))}</Fragment>, [
-      renderNode,
-    ])
+    const renderNodes = useCallback(
+      (nodes?: Node[] | null) => <Fragment>{nodes?.map((n) => renderNode(n))}</Fragment>,
+      [renderNode]
+    )
 
     const handleHtmlParse = useCallback(
       (err, parsed: Node[]) => {

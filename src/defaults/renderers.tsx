@@ -4,11 +4,24 @@ import { View, Text, Image, TouchableHighlight } from 'react-native'
 import type { ElementRenderer } from '../types'
 
 export default {
-  TextNode: (node, _, style, __) => (
-    <Text key={node.selectors[0]} style={style}>
-      {node.parent.name === 'li' && '•'} {node.data}
-    </Text>
-  ),
+  TextNode: (node, _, style, __) => {
+    const wrapText = node.data?.split(' ')
+    return (
+      <>
+        {node.parent.name === 'li' && (
+          <Text key={node.selectors[0]} style={style}>
+            {'• '}
+          </Text>
+        )}
+        {wrapText.map((text, index) => (
+          <Text key={node.selectors[0]} style={style}>
+            {text}
+            {index !== wrapText.length - 1 && ' '}
+          </Text>
+        ))}
+      </>
+    )
+  },
   p: (node, renderChildren, style, _) => (
     <View key={node.selectors[0]} style={style}>
       {renderChildren(node.children)}

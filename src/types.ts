@@ -48,7 +48,7 @@ export interface HTMLRendererProps {
 
 export type ElementRenderer = (
   node: Node,
-  renderChildren: (nodes: Node[]) => ReactNode,
+  renderChildren: (nodes: Node[] | null) => ReactNode,
   style: NodeStyle,
   props: ElementProps
 ) => ReactNode
