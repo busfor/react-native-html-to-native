@@ -10,9 +10,8 @@ export default StyleSheet.create({
     width: '100%',
   },
   li: {
-    width: '100%',
     flexDirection: 'row',
-    flexWrap: 'wrap',
+    fontSize: 12,
   },
   p: {
     width: '100%',

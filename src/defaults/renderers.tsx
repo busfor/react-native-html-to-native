@@ -5,50 +5,17 @@ import type { ElementRenderer } from '../types'
 
 export default {
   TextNode: (node, _, style, __) => {
-    const isUlItem =
-      node.parent &&
-      node.parent.parent &&
-      node.parent.parent.name === 'ul' &&
-      node.parent.name === 'li' &&
-      node.parent.parent.children &&
-      node.parent.children[0] === node
-
-    const isOlItem =
-      node.parent &&
-      node.parent.parent &&
-      node.parent.parent.name === 'ol' &&
-      node.parent.name === 'li' &&
-      node.parent.parent.children &&
-      node.parent.children[0] === node
-
     if (node.siblings && node.siblings.some((sibling) => sibling.name !== 'TextNode')) {
       const wrapText = node.data?.split(' ') || [node.data]
-      return (
-        <>
-          {isUlItem && (
-            <Text key={node.selectors[0]} style={style}>
-              {'• '}
-            </Text>
-          )}
-          {isOlItem && (
-            <Text key={node.selectors[0]} style={style}>
-              {node.parent.parent.children.indexOf(node.parent) + 1}
-              {'. '}
-            </Text>
-          )}
-          {wrapText.map((text, index) => (
-            <Text key={node.selectors[0]} style={style}>
-              {text}
-              {index !== wrapText.length - 1 && ' '}
-            </Text>
-          ))}
-        </>
-      )
+      return wrapText.map((text, index) => (
+        <Text key={node.selectors[0]} style={style}>
+          {text}
+          {index !== wrapText.length - 1 && ' '}
+        </Text>
+      ))
     } else {
       return (
         <Text key={node.selectors[0]} style={style}>
-          {isUlItem && '• '}
-          {isOlItem && `${node.parent.parent.children.indexOf(node.parent) + 1}. `}
           {node.data}
         </Text>
       )

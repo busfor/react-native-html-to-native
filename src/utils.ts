@@ -26,7 +26,12 @@ export const htmlToElement = (
   parser.done()
 }
 
-const domToNode = (dom: DomNode[] | null, parent: Node | null = null): Node[] => {
+const domToNode = (
+  dom: DomNode[] | null,
+  parent: Node | null = null,
+  orderedList: { indexPrefix: string } | null = null,
+  unorderedList: boolean | null = null
+): Node[] => {
   if (!dom) return null
 
   return dom.map((domNode: DomNode) => {
@@ -64,7 +69,38 @@ const domToNode = (dom: DomNode[] | null, parent: Node | null = null): Node[] =>
       nativeNode = new Node({ name, data }, selectors, parent, tag.attribs)
 
       if (DomUtils.hasChildren(tag)) {
-        nativeNode.children = domToNode(DomUtils.getChildren(tag), nativeNode)
+        let nextOrderedList = null
+        let nextUnorderedList = null
+
+        if (nativeNode.name === 'ul' || unorderedList) {
+          nextUnorderedList = true
+        } else if (nativeNode.name === 'ol') {
+          const prefix = (orderedList && orderedList.indexPrefix) || ''
+          nextOrderedList = { indexPrefix: `${prefix}1`.concat(prefix === '' ? '.' : '') }
+        }
+
+        nativeNode.children = domToNode(DomUtils.getChildren(tag), nativeNode, nextOrderedList, nextUnorderedList)
+        if (nativeNode.name === 'li') {
+          let indicatorData = ''
+          let indicatorName = ''
+
+          if (unorderedList) {
+            indicatorName = 'UnorderedIndicator'
+            indicatorData = '• '
+          } else if (orderedList) {
+            indicatorName = 'OrderedIndicator'
+            indicatorData = `${orderedList.indexPrefix} `
+          }
+
+          const indicatorSelectors = [indicatorName, 'TextNode']
+          parentSelectors.forEach((parentSelector) => {
+            indicatorSelectors.unshift(`${parentSelector}>TextNode`)
+            indicatorSelectors.unshift(`${parentSelector}>${indicatorName}`)
+          })
+          nativeNode.children.unshift(
+            new Node({ name: indicatorName, data: indicatorData }, indicatorSelectors, nativeNode, {})
+          )
+        }
         nativeNode.children.forEach((nodeChild) => {
           nodeChild.siblings = nativeNode.children.filter((child) => child !== nodeChild)
         })

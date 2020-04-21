@@ -80,17 +80,21 @@ import { HTMLView } from '@busfor/react-native-html-to-native'
 
 **Node** - object which describes HTML node
 
-| Parameter      | Description                                                      | Type             |
-| -------------- | ---------------------------------------------------------------- | ---------------- |
-| **data**       | Text data for text nodes, undefined otherwise                    | string           |
-| **name**       | Tag name for HTML tags, _TextNode_ for textual nodes             | string           |
-| **parent**     | Parent _Node_                                                    | _Node_           |
-| **children**   | Children _nodes_                                                 | Array<_Node_>    |
-| **siblings**   | _Nodes_ which are siblings for current node(same DOM level)      | Array<_Node_>    |
-| **attributes** | HTML tag attributes of type _NodeAttributes_                     | _NodeAttributes_ |
-| **selectors**  | CSS-like selectors for _Node_ to be used in styles and renderers | Array\<string>   |
+| Parameter      | Description                                                                                                           | Type             |
+| -------------- | --------------------------------------------------------------------------------------------------------------------- | ---------------- |
+| **data**       | Text data for text nodes, indicator for list items, undefined otherwise                                               | string           |
+| **name**       | Tag name for HTML tags, _TextNode_ for textual nodes, _UnorderedIndicator_ and _OrderedIndicator_ for list indicators | string           |
+| **parent**     | Parent _Node_                                                                                                         | _Node_           |
+| **children**   | Children _nodes_                                                                                                      | Array<_Node_>    |
+| **siblings**   | _Nodes_ which are siblings for current node(same DOM level)                                                           | Array<_Node_>    |
+| **attributes** | HTML tag attributes of type _NodeAttributes_                                                                          | _NodeAttributes_ |
+| **selectors**  | CSS-like selectors for _Node_ to be used in styles and renderers                                                      | Array\<string>   |
 
-**NOTE!** Nodes for text data have custom selector TextNode
+**NOTE!**
+
+- Nodes for text data have custom selector _TextNode_
+
+- List item indictors have custom selectors _OrderedIndicator_ and _UnorderedIndicator_
 
 _Example:_
 
