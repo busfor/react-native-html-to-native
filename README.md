@@ -152,8 +152,6 @@ Also feel free to fork and contribute by opening [Pull Request](https://github.c
 
 ⬜️ Add parsing progress indication and status
 
-⬜️ Add proper ordered lists indicators
-
 ⬜️ Improve CSS selectors
 
 ⬜️ Complete example app

@@ -1,3 +1,4 @@
+// @ts-ignore
 import { Parser } from 'htmlparser2-without-node-native'
 import { DomHandler } from 'domhandler'
 import * as DomUtils from 'domutils'
@@ -29,14 +30,14 @@ export const htmlToElement = (
 const domToNode = (
   dom: DomNode[] | null,
   parent: Node | null = null,
-  orderedList: { indexPrefix: string } | null = null,
+  orderedList: { ordered: boolean; indexPrefix: string } | null = null,
   unorderedList: boolean | null = null
 ): Node[] => {
   if (!dom) return null
 
   return dom.map((domNode: DomNode) => {
     let nativeNode: Node
-    domNode.type
+
     if (DomUtils.isTag(domNode)) {
       const tag = domNode as DomElement
       const name = DomUtils.getName(tag)
@@ -67,7 +68,7 @@ const domToNode = (
       })
 
       nativeNode = new Node({ name, data }, selectors, parent, tag.attribs)
-
+      let index = 0
       if (DomUtils.hasChildren(tag)) {
         let nextOrderedList = null
         let nextUnorderedList = null
@@ -76,7 +77,14 @@ const domToNode = (
           nextUnorderedList = true
         } else if (nativeNode.name === 'ol') {
           const prefix = (orderedList && orderedList.indexPrefix) || ''
-          nextOrderedList = { indexPrefix: `${prefix}1`.concat(prefix === '' ? '.' : '') }
+          nextOrderedList = { ordered: true, indexPrefix: `${prefix}`.concat(prefix !== '' ? '.' : '') }
+        } else if (nativeNode.name === 'li') {
+          const prefix = (orderedList && orderedList.indexPrefix) || ''
+          index =
+            DomUtils.getSiblings(domNode)
+              .filter((sibling) => DomUtils.isTag(sibling) && DomUtils.getName(sibling as DomElement))
+              .indexOf(domNode) + 1
+          nextOrderedList = { ordered: true, indexPrefix: `${prefix}${index}` }
         }
 
         nativeNode.children = domToNode(DomUtils.getChildren(tag), nativeNode, nextOrderedList, nextUnorderedList)
@@ -86,10 +94,10 @@ const domToNode = (
 
           if (unorderedList) {
             indicatorName = 'UnorderedIndicator'
-            indicatorData = '• '
+            indicatorData = '•'
           } else if (orderedList) {
             indicatorName = 'OrderedIndicator'
-            indicatorData = `${orderedList.indexPrefix} `
+            indicatorData = `${orderedList.indexPrefix}${index}`
           }
 
           const indicatorSelectors = [indicatorName, 'TextNode']
@@ -121,3 +129,7 @@ const domToNode = (
     return nativeNode
   })
 }
+
+htmlToElement('<ol><li>Item</li><li>Item</li><li><ol><li>Item</li><li>Item</li></ol></li></ol>', (err, elements) => {
+  console.dir(elements, { depth: null })
+})

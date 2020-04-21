@@ -23,6 +23,12 @@ export default StyleSheet.create({
     flexDirection: 'row',
     flexWrap: 'wrap',
   },
+  OrderedIndicator: {
+    paddingRight: 4,
+  },
+  UnorderedIndicator: {
+    paddingRight: 4,
+  },
   'h1>TextNode': {
     fontSize: 24,
   },
