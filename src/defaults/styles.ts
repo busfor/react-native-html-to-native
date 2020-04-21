@@ -6,21 +6,18 @@ export default StyleSheet.create({
   TextNode: {
     fontSize: 12,
   },
-  ul: {
-    width: '100%',
-  },
-  ol: {
-    width: '100%',
-  },
   li: {
+    width: '100%',
     flexDirection: 'row',
     flexWrap: 'wrap',
   },
   p: {
+    width: '100%',
     flexDirection: 'row',
     flexWrap: 'wrap',
   },
   TextWrap: {
+    width: '100%',
     flexDirection: 'row',
     flexWrap: 'wrap',
   },
@@ -77,26 +74,31 @@ export default StyleSheet.create({
   },
   tr: {
     flexDirection: 'row',
-    flexWrap: 'wrap',
+    width: '100%',
   },
   th: {
     flexDirection: 'row',
     flexWrap: 'wrap',
+    flex: 1,
   },
   td: {
     flexDirection: 'row',
     flexWrap: 'wrap',
+    flex: 1,
+    borderWidth: StyleSheet.hairlineWidth,
+    borderColor: 'black',
   },
   thead: {
     flexDirection: 'row',
-    flexWrap: 'wrap',
+    width: '100%',
   },
   tfoot: {
     flexDirection: 'row',
-    flexWrap: 'wrap',
+    width: '100%',
   },
   tbody: {
     flexDirection: 'column',
+    width: '100%',
   },
   hr: {
     width: '100%',

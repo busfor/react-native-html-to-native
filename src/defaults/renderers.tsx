@@ -24,16 +24,10 @@ export default {
       )
     } else {
       return (
-        <>
-          {node.parent && node.parent.name === 'li' && (
-            <Text key={node.selectors[0]} style={style}>
-              {'• '}
-            </Text>
-          )}
-          <Text key={node.selectors[0]} style={style}>
-            {node.data}
-          </Text>
-        </>
+        <Text key={node.selectors[0]} style={style}>
+          {node.parent && node.parent.name === 'li' && '• '}
+          {node.data}
+        </Text>
       )
     }
   },
