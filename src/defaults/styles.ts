@@ -6,6 +6,9 @@ export default StyleSheet.create({
   TextNode: {
     fontSize: 12,
   },
+  br: {
+    width: '100%',
+  },
   li: {
     width: '100%',
     flexDirection: 'row',
@@ -120,5 +123,8 @@ export default StyleSheet.create({
   },
   'a>TextNode': {
     color: 'blue',
+  },
+  'ol>li>ol': {
+    marginLeft: 4,
   },
 }) as { [s: string]: NodeStyle }
