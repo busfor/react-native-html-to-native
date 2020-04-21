@@ -72,6 +72,10 @@ export default StyleSheet.create({
     borderColor: 'black',
     width: '100%',
   },
+  table: {
+    borderWidth: StyleSheet.hairlineWidth,
+    borderColor: 'black',
+  },
   tr: {
     flexDirection: 'row',
     width: '100%',
@@ -80,6 +84,11 @@ export default StyleSheet.create({
     flexDirection: 'row',
     flexWrap: 'wrap',
     flex: 1,
+    borderWidth: StyleSheet.hairlineWidth,
+    borderColor: 'black',
+  },
+  'th>TextNode': {
+    fontWeight: 'bold',
   },
   td: {
     flexDirection: 'row',
