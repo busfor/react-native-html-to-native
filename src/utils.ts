@@ -77,14 +77,14 @@ const domToNode = (
           nextUnorderedList = true
         } else if (nativeNode.name === 'ol') {
           const prefix = (orderedList && orderedList.indexPrefix) || ''
-          nextOrderedList = { ordered: true, indexPrefix: `${prefix}`.concat(prefix !== '' ? '.' : '') }
+          nextOrderedList = { ordered: true, indexPrefix: `${prefix}` }
         } else if (nativeNode.name === 'li') {
           const prefix = (orderedList && orderedList.indexPrefix) || ''
           index =
             DomUtils.getSiblings(domNode)
               .filter((sibling) => DomUtils.isTag(sibling) && DomUtils.getName(sibling as DomElement))
               .indexOf(domNode) + 1
-          nextOrderedList = { ordered: true, indexPrefix: `${prefix}${index}` }
+          nextOrderedList = { ordered: true, indexPrefix: `${prefix}${index}`.concat(prefix === '' ? '.' : '') }
         }
 
         nativeNode.children = domToNode(DomUtils.getChildren(tag), nativeNode, nextOrderedList, nextUnorderedList)
@@ -97,7 +97,7 @@ const domToNode = (
             indicatorData = '•'
           } else if (orderedList) {
             indicatorName = 'OrderedIndicator'
-            indicatorData = `${orderedList.indexPrefix}${index}`
+            indicatorData = `${orderedList.indexPrefix}${index}`.concat(orderedList.indexPrefix === '' ? '.' : '')
           }
 
           const indicatorSelectors = [indicatorName, 'TextNode']
