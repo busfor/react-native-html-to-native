@@ -33,20 +33,18 @@ export default () => (
 );
 
 const html = `
-<div class="section_question-text"><p>Свободная рассадка означает, что на этом рейсе Перевозчик ограничил выбор конкретного места и фактический номер места будет определен диспетчером непосредственно при посадке на рейс.</p>
-
-<p>Рекомендуем вам приходить на посадку заблаговременно.</p>
-
-<p>Если у выбранного Перевозчика есть возможность выбрать конкретное место в автобусе, то при оформлении заказа и нажатии кнопки <strong>“Выбор места”</strong>, вам будет показана схема автобуса с указанием свободных посадочных мест.</p>
-</div>
-<div><p>Paragraph</p>
+<div>
+<h1>Header with <a href="/">link</a></h1>
+<p>Paragraph</p>
 </div><a class="link" href="https://google.com/">Link</a><img src="https://miro.medium.com/max/1200/1*mk1-6aYaf_Bes1E3Imhc0A.jpeg" />
 <p>Test Test Test Test Test Test Test Test Test <a href="#test">Link</a> in text text</p><a>Default link</a>
-<p>Text before list</p>
+<p>
+Text before list
 <ul>
     <li>Item</li>
     <li>Item 2</li>
 </ul>
+</p>
 <table>
     <thead>
         <tr>

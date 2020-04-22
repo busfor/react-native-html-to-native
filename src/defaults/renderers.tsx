@@ -1,7 +1,8 @@
 import React from 'react'
 import { View, Text, Image, TouchableOpacity } from 'react-native'
 
-import { ElementRenderer } from '../types'
+import { ElementRenderer, TextNodeName } from '../types'
+import { getNodeName } from '../utils'
 
 const baseTextRenderer: ElementRenderer = (renderedChildren, style, props) => (
   <Text key={props.key} style={style}>
@@ -21,11 +22,26 @@ export default {
       {props.data}
     </Text>
   ),
-  TextNode: (_, style, props) => (
-    <Text key={props.key} style={style}>
-      {props.data}
-    </Text>
-  ),
+  TextNode: (_, style, props) => {
+    const isParentView = props.parent && !(getNodeName(props.parent) in TextNodeName)
+    const isSomeSiblingsNotText =
+      props.siblings && props.siblings.some((sibling) => !(getNodeName(sibling) in TextNodeName))
+    if (isParentView && isSomeSiblingsNotText) {
+      const wrapText = props.data?.split(' ') || [props.data]
+      return wrapText.map((text, index) => (
+        <Text key={`${props.key}-${index}`} style={style}>
+          {text}
+          {index !== wrapText.length - 1 && ' '}
+        </Text>
+      ))
+    } else {
+      return (
+        <Text key={props.key} style={style}>
+          {props.data}
+        </Text>
+      )
+    }
+  },
   // Text
   h1: baseTextRenderer,
   h2: baseTextRenderer,

@@ -16,7 +16,7 @@ export const getNodeName = (node: Node) => {
 
 export const getNodeData = (node: Node) => {
   if (DomUtils.isText(node)) {
-    return DomUtils.getText(node)
+    return DomUtils.getText(node).replace(/\n/g, '')
   }
 }
 

@@ -147,7 +147,7 @@ const HTMLRenderer = memo(
           siblings,
           parent,
           data,
-          key: selectors[0],
+          key: String(node.startIndex),
         }
         if (renderer) {
           return renderer(renderedChildren, style, props)
@@ -170,7 +170,11 @@ const HTMLRenderer = memo(
     )
 
     const domHandler = useMemo(
-      () => new DomHandler(domHandlerCallback, { normalizeWhitespace: parserOptions?.normalizeWhitespace || false }),
+      () =>
+        new DomHandler(domHandlerCallback, {
+          withStartIndices: true,
+          normalizeWhitespace: parserOptions?.normalizeWhitespace || false,
+        }),
       [domHandlerCallback, parserOptions]
     )
 
