@@ -6,7 +6,7 @@ import { DomHandler, Node, DataNode } from 'domhandler'
 import { ElementType } from 'domelementtype'
 import * as DomUtils from 'domutils'
 
-import type { HTMLRendererProps, ElementRenderer, ElementProps } from './types'
+import { HTMLRendererProps, ElementRenderer, ElementProps, TextNodeName } from './types'
 import Defaults from './defaults'
 import { getNodeData, getNodeAttributes, getNodeSelectors, getNodeName } from './utils'
 
@@ -82,10 +82,15 @@ const HTMLRenderer = memo(
       ): ReactNode => {
         const name = getNodeName(node)
         const data = getNodeData(node)
+
+        if (name === TextNodeName.TextNode && data.trim().length === 0) {
+          return null
+        }
+
         const attributes = getNodeAttributes(node)
         const selectors = getNodeSelectors(node, previousSelectors)
 
-        const children = DomUtils.getChildren(node)
+        let children = DomUtils.getChildren(node)
         const siblings = DomUtils.getSiblings(node)
         const parent = DomUtils.getParent(node)
 
@@ -122,6 +127,10 @@ const HTMLRenderer = memo(
           if (children.some((child) => child.type !== 'text')) {
             style = { ...style, ...Defaults.styles.TextWrap }
           }
+
+          // TextNode can only contain TextNode
+          children = name in TextNodeName ? children.filter((child) => getNodeName(child) in TextNodeName) : children
+
           renderedChildren = children.map((child) =>
             renderDomNode(child, selectors, nextOrderedList, nextUnorderedList)
           )

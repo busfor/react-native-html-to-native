@@ -39,6 +39,23 @@ export interface ElementProps {
 }
 
 export enum CustomNodeNames {
-  Text = 'TextNode',
   Indicator = 'IndicatorNode',
+}
+
+export type NodeStyle = StyleProp<any>
+
+export enum TextNodeName {
+  TextNode = 'TextNode',
+  p = 'p',
+  b = 'b',
+  i = 'i',
+  u = 'u',
+  code = 'code',
+  mark = 'mark',
+  strong = 'strong',
+  small = 'small',
+  sub = 'sub',
+  abbr = 'abbr',
+  span = 'span',
+  a = 'a',
 }

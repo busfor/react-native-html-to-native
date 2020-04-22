@@ -1,7 +1,7 @@
 import * as DomUtils from 'domutils'
 import type { Node } from 'domhandler'
 
-import { CustomNodeNames } from './types'
+import { CustomNodeNames, TextNodeName } from './types'
 
 export const getNodeName = (node: Node) => {
   if (DomUtils.isTag(node)) {
@@ -10,13 +10,13 @@ export const getNodeName = (node: Node) => {
     if (getNodeName(node.parent) === 'li' && DomUtils.getChildren(node.parent).indexOf(node) === 0) {
       return CustomNodeNames.Indicator
     }
-    return CustomNodeNames.Text
+    return TextNodeName.TextNode
   }
 }
 
 export const getNodeData = (node: Node) => {
   if (DomUtils.isText(node)) {
-    return DomUtils.getText(node)
+    return DomUtils.getText(node).replace('\n', '')
   }
 }
 

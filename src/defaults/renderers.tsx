@@ -1,7 +1,19 @@
 import React from 'react'
 import { View, Text, Image, TouchableOpacity } from 'react-native'
 
-import type { ElementRenderer } from '../types'
+import { ElementRenderer } from '../types'
+
+const baseTextRenderer: ElementRenderer = (renderedChildren, style, props) => (
+  <Text key={props.key} style={style}>
+    {renderedChildren}
+  </Text>
+)
+
+const baseViewRenderer: ElementRenderer = (renderedChildren, style, props) => (
+  <View key={props.key} style={style}>
+    {renderedChildren}
+  </View>
+)
 
 export default {
   IndicatorNode: (_, style, props) => (
@@ -9,124 +21,53 @@ export default {
       {props.data}
     </Text>
   ),
-  TextNode: (_, style, props) => {
-    if (props.siblings && props.siblings.some((sibling) => sibling.type !== 'text')) {
-      const wrapText = props.data?.split(' ') || [props.data]
-      return wrapText.map((text, index) => (
-        <Text key={`${props.key}-${index}`} style={style}>
-          {text}
-          {index !== wrapText.length - 1 && ' '}
-        </Text>
-      ))
-    } else {
-      return (
-        <Text key={props.key} style={style}>
-          {props.data}
-        </Text>
-      )
-    }
-  },
-  br: (_, style, props) => <View key={props.key} style={style} />,
-  p: (renderedChildren, style, props) => (
-    <View key={props.key} style={style}>
-      {renderedChildren}
-    </View>
+  TextNode: (_, style, props) => (
+    <Text key={props.key} style={style}>
+      {props.data}
+    </Text>
   ),
-  h1: (renderedChildren, style, props) => (
-    <View key={props.key} style={style}>
-      {renderedChildren}
-    </View>
-  ),
-  h2: (renderedChildren, style, props) => (
-    <View key={props.key} style={style}>
-      {renderedChildren}
-    </View>
-  ),
-  h3: (renderedChildren, style, props) => (
-    <View key={props.key} style={style}>
-      {renderedChildren}
-    </View>
-  ),
-  h4: (renderedChildren, style, props) => (
-    <View key={props.key} style={style}>
-      {renderedChildren}
-    </View>
-  ),
-  h5: (renderedChildren, style, props) => (
-    <View key={props.key} style={style}>
-      {renderedChildren}
-    </View>
-  ),
-  h6: (renderedChildren, style, props) => (
-    <View key={props.key} style={style}>
-      {renderedChildren}
-    </View>
-  ),
-  b: (renderedChildren, style, props) => (
-    <View key={props.key} style={style}>
-      {renderedChildren}
-    </View>
-  ),
-  i: (renderedChildren, style, props) => (
-    <View key={props.key} style={style}>
-      {renderedChildren}
-    </View>
-  ),
-  u: (renderedChildren, style, props) => (
-    <View key={props.key} style={style}>
-      {renderedChildren}
-    </View>
-  ),
-  li: (renderedChildren, style, props) => (
-    <View key={props.key} style={style}>
-      {renderedChildren}
-    </View>
-  ),
-  code: (renderedChildren, style, props) => (
-    <View key={props.key} style={style}>
-      {renderedChildren}
-    </View>
-  ),
-  nav: (renderedChildren, style, props) => (
-    <View key={props.key} style={style}>
-      {renderedChildren}
-    </View>
-  ),
-  mark: (renderedChildren, style, props) => (
-    <View key={props.key} style={style}>
-      {renderedChildren}
-    </View>
-  ),
-  strong: (renderedChildren, style, props) => (
-    <View key={props.key} style={style}>
-      {renderedChildren}
-    </View>
-  ),
-  small: (renderedChildren, style, props) => (
-    <View key={props.key} style={style}>
-      {renderedChildren}
-    </View>
-  ),
-  sub: (renderedChildren, style, props) => (
-    <View key={props.key} style={style}>
-      {renderedChildren}
-    </View>
-  ),
-  abbr: (renderedChildren, style, props) => (
-    <View key={props.key} style={style}>
-      {renderedChildren}
-    </View>
-  ),
-  address: (renderedChildren, style, props) => (
-    <View key={props.key} style={style}>
-      {renderedChildren}
-    </View>
-  ),
-  blockquote: (renderedChildren, style, props) => (
-    <View key={props.key} style={style}>
-      {renderedChildren}
-    </View>
-  ),
+  // Text
+  p: baseTextRenderer,
+  h1: baseTextRenderer,
+  h2: baseTextRenderer,
+  h3: baseTextRenderer,
+  h4: baseTextRenderer,
+  h5: baseTextRenderer,
+  h6: baseTextRenderer,
+  b: baseTextRenderer,
+  i: baseTextRenderer,
+  u: baseTextRenderer,
+  code: baseTextRenderer,
+  mark: baseTextRenderer,
+  strong: baseTextRenderer,
+  small: baseTextRenderer,
+  sub: baseTextRenderer,
+  abbr: baseTextRenderer,
+  span: baseTextRenderer,
+  // View
+  div: baseViewRenderer,
+  section: baseViewRenderer,
+  article: baseViewRenderer,
+  header: baseViewRenderer,
+  footer: baseViewRenderer,
+  main: baseViewRenderer,
+  thead: baseViewRenderer,
+  tbody: baseViewRenderer,
+  tfoot: baseViewRenderer,
+  ul: baseViewRenderer,
+  ol: baseViewRenderer,
+  li: baseViewRenderer,
+  table: baseViewRenderer,
+  tr: baseViewRenderer,
+  td: baseViewRenderer,
+  th: baseViewRenderer,
+  nav: baseViewRenderer,
+  address: baseViewRenderer,
+  blockquote: baseViewRenderer,
+  // Dividers
+  br: (_, style, __) => <View style={style} />,
+  hr: (_, style, __) => <View style={style} />,
+  // Other
   img: (_, style, props) => <Image key={props.key} style={style} source={{ uri: props.attributes?.src }} />,
   a: (renderedChildren, style, props) => (
     <Text key={props.key} style={style} onPress={() => props.handleLinkPress(props.attributes?.href)}>
@@ -137,87 +78,6 @@ export default {
     <TouchableOpacity key={props.key} style={style}>
       {renderedChildren}
     </TouchableOpacity>
-  ),
-  div: (renderedChildren, style, props) => (
-    <View key={props.key} style={style}>
-      {renderedChildren}
-    </View>
-  ),
-  span: (renderedChildren, style, props) => (
-    <View key={props.key} style={style}>
-      {renderedChildren}
-    </View>
-  ),
-  section: (renderedChildren, style, props) => (
-    <View key={props.key} style={style}>
-      {renderedChildren}
-    </View>
-  ),
-  article: (renderedChildren, style, props) => (
-    <View key={props.key} style={style}>
-      {renderedChildren}
-    </View>
-  ),
-  header: (renderedChildren, style, props) => (
-    <View key={props.key} style={style}>
-      {renderedChildren}
-    </View>
-  ),
-  footer: (renderedChildren, style, props) => (
-    <View key={props.key} style={style}>
-      {renderedChildren}
-    </View>
-  ),
-  main: (renderedChildren, style, props) => (
-    <View key={props.key} style={style}>
-      {renderedChildren}
-    </View>
-  ),
-  thead: (renderedChildren, style, props) => (
-    <View key={props.key} style={style}>
-      {renderedChildren}
-    </View>
-  ),
-  tbody: (renderedChildren, style, props) => (
-    <View key={props.key} style={style}>
-      {renderedChildren}
-    </View>
-  ),
-  tfoot: (renderedChildren, style, props) => (
-    <View key={props.key} style={style}>
-      {renderedChildren}
-    </View>
-  ),
-  hr: (_, style, props) => <View key={props.key} style={style} />,
-  ul: (renderedChildren, style, props) => (
-    <View key={props.key} style={style}>
-      {renderedChildren}
-    </View>
-  ),
-  ol: (renderedChildren, style, props) => (
-    <View key={props.key} style={style}>
-      {renderedChildren}
-    </View>
-  ),
-  table: (renderedChildren, style, props) => (
-    <View key={props.key} style={style}>
-      {renderedChildren}
-    </View>
-  ),
-  tr: (renderedChildren, style, props) => (
-    <View key={props.key} style={style}>
-      {renderedChildren}
-    </View>
-  ),
-  td: (renderedChildren, style, props) => (
-    <View key={props.key} style={style}>
-      {renderedChildren}
-    </View>
-  ),
-  th: (renderedChildren, style, props) => (
-    <View key={props.key} style={style}>
-      {renderedChildren}
-    </View>
   ),
   head: (_, __, ___) => null,
   canvas: (_, __, ___) => null,
