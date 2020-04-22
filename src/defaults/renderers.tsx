@@ -1,230 +1,228 @@
 import React from 'react'
-import { View, Text, Image, TouchableHighlight } from 'react-native'
+import { View, Text, Image, TouchableOpacity } from 'react-native'
 
 import type { ElementRenderer } from '../types'
 
 export default {
-  TextNode: (node, _, style, __) => {
-    if (node.siblings && node.siblings.some((sibling) => sibling.name !== 'TextNode')) {
-      const wrapText = node.data?.split(' ') || [node.data]
+  TextNode: (_, style, props) => {
+    if (props.siblings && props.siblings.some((sibling) => sibling.type !== 'text')) {
+      const wrapText = props.data?.split(' ') || [props.data]
       return wrapText.map((text, index) => (
-        <Text key={node.selectors[0]} style={style}>
+        <Text key={`${props.key}-${index}`} style={style}>
           {text}
           {index !== wrapText.length - 1 && ' '}
         </Text>
       ))
     } else {
       return (
-        <Text key={node.selectors[0]} style={style}>
-          {node.data}
+        <Text key={props.key} style={style}>
+          {props.data}
         </Text>
       )
     }
   },
-  br: (_, __, style, ___) => <View style={style} />,
-  p: (node, renderChildren, style, _) => (
-    <View key={node.selectors[0]} style={style}>
-      {renderChildren(node.children)}
+  br: (_, style, props) => <View key={props.key} style={style} />,
+  p: (renderedChildren, style, props) => (
+    <View key={props.key} style={style}>
+      {renderedChildren}
     </View>
   ),
-  h1: (node, renderChildren, style, _) => (
-    <View key={node.selectors[0]} style={style}>
-      {renderChildren(node.children)}
+  h1: (renderedChildren, style, props) => (
+    <View key={props.key} style={style}>
+      {renderedChildren}
     </View>
   ),
-  h2: (node, renderChildren, style, _) => (
-    <View key={node.selectors[0]} style={style}>
-      {renderChildren(node.children)}
+  h2: (renderedChildren, style, props) => (
+    <View key={props.key} style={style}>
+      {renderedChildren}
     </View>
   ),
-  h3: (node, renderChildren, style, _) => (
-    <View key={node.selectors[0]} style={style}>
-      {renderChildren(node.children)}
+  h3: (renderedChildren, style, props) => (
+    <View key={props.key} style={style}>
+      {renderedChildren}
     </View>
   ),
-  h4: (node, renderChildren, style, _) => (
-    <View key={node.selectors[0]} style={style}>
-      {renderChildren(node.children)}
+  h4: (renderedChildren, style, props) => (
+    <View key={props.key} style={style}>
+      {renderedChildren}
     </View>
   ),
-  h5: (node, renderChildren, style, _) => (
-    <View key={node.selectors[0]} style={style}>
-      {renderChildren(node.children)}
+  h5: (renderedChildren, style, props) => (
+    <View key={props.key} style={style}>
+      {renderedChildren}
     </View>
   ),
-  h6: (node, renderChildren, style, _) => (
-    <View key={node.selectors[0]} style={style}>
-      {renderChildren(node.children)}
+  h6: (renderedChildren, style, props) => (
+    <View key={props.key} style={style}>
+      {renderedChildren}
     </View>
   ),
-  b: (node, renderChildren, style, _) => (
-    <View key={node.selectors[0]} style={style}>
-      {renderChildren(node.children)}
+  b: (renderedChildren, style, props) => (
+    <View key={props.key} style={style}>
+      {renderedChildren}
     </View>
   ),
-  i: (node, renderChildren, style, _) => (
-    <View key={node.selectors[0]} style={style}>
-      {renderChildren(node.children)}
+  i: (renderedChildren, style, props) => (
+    <View key={props.key} style={style}>
+      {renderedChildren}
     </View>
   ),
-  u: (node, renderChildren, style, _) => (
-    <View key={node.selectors[0]} style={style}>
-      {renderChildren(node.children)}
+  u: (renderedChildren, style, props) => (
+    <View key={props.key} style={style}>
+      {renderedChildren}
     </View>
   ),
-  li: (node, renderChildren, style, _) => (
-    <View key={node.selectors[0]} style={style}>
-      {renderChildren(node.children)}
+  li: (renderedChildren, style, props) => (
+    <View key={props.key} style={style}>
+      {renderedChildren}
     </View>
   ),
-  code: (node, renderChildren, style, _) => (
-    <View key={node.selectors[0]} style={style}>
-      {renderChildren(node.children)}
+  code: (renderedChildren, style, props) => (
+    <View key={props.key} style={style}>
+      {renderedChildren}
     </View>
   ),
-  nav: (node, renderChildren, style, _) => (
-    <View key={node.selectors[0]} style={style}>
-      {renderChildren(node.children)}
+  nav: (renderedChildren, style, props) => (
+    <View key={props.key} style={style}>
+      {renderedChildren}
     </View>
   ),
-  mark: (node, renderChildren, style, _) => (
-    <View key={node.selectors[0]} style={style}>
-      {renderChildren(node.children)}
+  mark: (renderedChildren, style, props) => (
+    <View key={props.key} style={style}>
+      {renderedChildren}
     </View>
   ),
-  strong: (node, renderChildren, style, _) => (
-    <View key={node.selectors[0]} style={style}>
-      {renderChildren(node.children)}
+  strong: (renderedChildren, style, props) => (
+    <View key={props.key} style={style}>
+      {renderedChildren}
     </View>
   ),
-  small: (node, renderChildren, style, _) => (
-    <View key={node.selectors[0]} style={style}>
-      {renderChildren(node.children)}
+  small: (renderedChildren, style, props) => (
+    <View key={props.key} style={style}>
+      {renderedChildren}
     </View>
   ),
-  sub: (node, renderChildren, style, _) => (
-    <View key={node.selectors[0]} style={style}>
-      {renderChildren(node.children)}
+  sub: (renderedChildren, style, props) => (
+    <View key={props.key} style={style}>
+      {renderedChildren}
     </View>
   ),
-  abbr: (node, renderChildren, style, _) => (
-    <View key={node.selectors[0]} style={style}>
-      {renderChildren(node.children)}
+  abbr: (renderedChildren, style, props) => (
+    <View key={props.key} style={style}>
+      {renderedChildren}
     </View>
   ),
-  address: (node, renderChildren, style, _) => (
-    <View key={node.selectors[0]} style={style}>
-      {renderChildren(node.children)}
+  address: (renderedChildren, style, props) => (
+    <View key={props.key} style={style}>
+      {renderedChildren}
     </View>
   ),
-  blockquote: (node, renderChildren, style, _) => (
-    <View key={node.selectors[0]} style={style}>
-      {renderChildren(node.children)}
+  blockquote: (renderedChildren, style, props) => (
+    <View key={props.key} style={style}>
+      {renderedChildren}
     </View>
   ),
-  img: (node, __, style, props) => (
-    <Image key={node.selectors[0]} style={style} source={{ uri: props.attributes?.src }} />
-  ),
-  a: (node, renderChildren, style, props) => (
-    <Text key={node.selectors[0]} style={style} onPress={() => props.handleLinkPress(props.attributes?.href)}>
-      {renderChildren(node.children)}
+  img: (_, style, props) => <Image key={props.key} style={style} source={{ uri: props.attributes?.src }} />,
+  a: (renderedChildren, style, props) => (
+    <Text key={props.key} style={style} onPress={() => props.handleLinkPress(props.attributes?.href)}>
+      {renderedChildren}
     </Text>
   ),
-  button: (node, renderChildren, style, _) => (
-    <TouchableHighlight key={node.selectors[0]} style={style}>
-      {renderChildren(node.children)}
-    </TouchableHighlight>
+  button: (renderedChildren, style, props) => (
+    <TouchableOpacity key={props.key} style={style}>
+      {renderedChildren}
+    </TouchableOpacity>
   ),
-  div: (node, renderChildren, style, _) => (
-    <View key={node.selectors[0]} style={style}>
-      {renderChildren(node.children)}
+  div: (renderedChildren, style, props) => (
+    <View key={props.key} style={style}>
+      {renderedChildren}
     </View>
   ),
-  span: (node, renderChildren, style, _) => (
-    <View key={node.selectors[0]} style={style}>
-      {renderChildren(node.children)}
+  span: (renderedChildren, style, props) => (
+    <View key={props.key} style={style}>
+      {renderedChildren}
     </View>
   ),
-  section: (node, renderChildren, style, _) => (
-    <View key={node.selectors[0]} style={style}>
-      {renderChildren(node.children)}
+  section: (renderedChildren, style, props) => (
+    <View key={props.key} style={style}>
+      {renderedChildren}
     </View>
   ),
-  article: (node, renderChildren, style, _) => (
-    <View key={node.selectors[0]} style={style}>
-      {renderChildren(node.children)}
+  article: (renderedChildren, style, props) => (
+    <View key={props.key} style={style}>
+      {renderedChildren}
     </View>
   ),
-  header: (node, renderChildren, style, _) => (
-    <View key={node.selectors[0]} style={style}>
-      {renderChildren(node.children)}
+  header: (renderedChildren, style, props) => (
+    <View key={props.key} style={style}>
+      {renderedChildren}
     </View>
   ),
-  footer: (node, renderChildren, style, _) => (
-    <View key={node.selectors[0]} style={style}>
-      {renderChildren(node.children)}
+  footer: (renderedChildren, style, props) => (
+    <View key={props.key} style={style}>
+      {renderedChildren}
     </View>
   ),
-  main: (node, renderChildren, style, _) => (
-    <View key={node.selectors[0]} style={style}>
-      {renderChildren(node.children)}
+  main: (renderedChildren, style, props) => (
+    <View key={props.key} style={style}>
+      {renderedChildren}
     </View>
   ),
-  thead: (node, renderChildren, style, _) => (
-    <View key={node.selectors[0]} style={style}>
-      {renderChildren(node.children)}
+  thead: (renderedChildren, style, props) => (
+    <View key={props.key} style={style}>
+      {renderedChildren}
     </View>
   ),
-  tbody: (node, renderChildren, style, _) => (
-    <View key={node.selectors[0]} style={style}>
-      {renderChildren(node.children)}
+  tbody: (renderedChildren, style, props) => (
+    <View key={props.key} style={style}>
+      {renderedChildren}
     </View>
   ),
-  tfoot: (node, renderChildren, style, _) => (
-    <View key={node.selectors[0]} style={style}>
-      {renderChildren(node.children)}
+  tfoot: (renderedChildren, style, props) => (
+    <View key={props.key} style={style}>
+      {renderedChildren}
     </View>
   ),
-  hr: (_, __, style, ___) => <View style={style} />,
-  ul: (node, renderChildren, style, _) => (
-    <View key={node.selectors[0]} style={style}>
-      {renderChildren(node.children)}
+  hr: (_, style, props) => <View key={props.key} style={style} />,
+  ul: (renderedChildren, style, props) => (
+    <View key={props.key} style={style}>
+      {renderedChildren}
     </View>
   ),
-  ol: (node, renderChildren, style, _) => (
-    <View key={node.selectors[0]} style={style}>
-      {renderChildren(node.children)}
+  ol: (renderedChildren, style, props) => (
+    <View key={props.key} style={style}>
+      {renderedChildren}
     </View>
   ),
-  table: (node, renderChildren, style, _) => (
-    <View key={node.selectors[0]} style={style}>
-      {renderChildren(node.children)}
+  table: (renderedChildren, style, props) => (
+    <View key={props.key} style={style}>
+      {renderedChildren}
     </View>
   ),
-  tr: (node, renderChildren, style, _) => (
-    <View key={node.selectors[0]} style={style}>
-      {renderChildren(node.children)}
+  tr: (renderedChildren, style, props) => (
+    <View key={props.key} style={style}>
+      {renderedChildren}
     </View>
   ),
-  td: (node, renderChildren, style, _) => (
-    <View key={node.selectors[0]} style={style}>
-      {renderChildren(node.children)}
+  td: (renderedChildren, style, props) => (
+    <View key={props.key} style={style}>
+      {renderedChildren}
     </View>
   ),
-  th: (node, renderChildren, style, _) => (
-    <View key={node.selectors[0]} style={style}>
-      {renderChildren(node.children)}
+  th: (renderedChildren, style, props) => (
+    <View key={props.key} style={style}>
+      {renderedChildren}
     </View>
   ),
-  head: (_, __, ___, ____) => null,
-  canvas: (_, __, ___, ____) => null,
-  caption: (_, __, ___, ____) => null,
-  iframe: (_, __, ___, ____) => null,
-  svg: (_, __, ___, ____) => null,
-  var: (_, __, ___, ____) => null,
-  video: (_, __, ___, ____) => null,
-  audio: (_, __, ___, ____) => null,
-  cite: (_, __, ___, ____) => null,
-  textarea: (_, __, ___, ____) => null,
-  input: (_, __, ___, ____) => null,
+  head: (_, __, ___) => null,
+  canvas: (_, __, ___) => null,
+  caption: (_, __, ___) => null,
+  iframe: (_, __, ___) => null,
+  svg: (_, __, ___) => null,
+  var: (_, __, ___) => null,
+  video: (_, __, ___) => null,
+  audio: (_, __, ___) => null,
+  cite: (_, __, ___) => null,
+  textarea: (_, __, ___) => null,
+  input: (_, __, ___) => null,
 } as { [s: string]: ElementRenderer }

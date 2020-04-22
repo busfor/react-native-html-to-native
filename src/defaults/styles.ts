@@ -1,6 +1,5 @@
 import { StyleSheet } from 'react-native'
-
-import type { NodeStyle } from '../types'
+import type { StyleProp } from 'react-native'
 
 export default StyleSheet.create({
   TextNode: {
@@ -132,4 +131,4 @@ export default StyleSheet.create({
   'ol>li>ol': {
     marginLeft: 4,
   },
-}) as { [s: string]: NodeStyle }
+}) as { [s: string]: StyleProp<any> }

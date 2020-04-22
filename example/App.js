@@ -9,14 +9,16 @@ export default () => (
       onError={(err) => console.log(err)}
       styles={styles}
       renderers={{
-        'a.link': (node, renderChildren, style, props) => (
-          <TouchableOpacity
-            key={node.selectors[0]}
-            onPress={() => console.log('Clicked', props.attributes.href)}
-            style={style}>
-            {renderChildren(node.children)}
-          </TouchableOpacity>
-        ),
+        'a.link': (renderedChildren, style, props) => {
+          return (
+            <TouchableOpacity
+              key={props.key}
+              onPress={() => console.log('Clicked', props.attributes.href)}
+              style={style}>
+              {renderedChildren}
+            </TouchableOpacity>
+          );
+        },
       }}
       html={html}
     />

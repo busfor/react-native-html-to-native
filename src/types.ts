@@ -1,30 +1,6 @@
 import type { ReactNode } from 'react'
-import { StyleProp } from 'react-native'
-
-export class Node {
-  constructor(
-    props: { name?: string; data?: string },
-    selectors: string[],
-    parent: Node | null,
-    attributes: NodeAttributes
-  ) {
-    this.parent = parent
-    this.attributes = attributes
-    this.children = null
-    this.siblings = null
-    this.selectors = selectors
-    this.name = props.name
-    this.data = props.data
-  }
-
-  data?: string
-  name?: string
-  parent: Node | null
-  children: Node[] | null
-  siblings: Node[] | null
-  attributes?: NodeAttributes
-  selectors: string[]
-}
+import type { StyleProp } from 'react-native'
+import type { Node as DomNode } from 'domhandler'
 
 export interface ParserOptions {
   normalizeWhitespace: boolean
@@ -37,7 +13,7 @@ export interface HTMLRendererProps {
   renderers?: {
     [s: string]: ElementRenderer
   }
-  styles?: { [s: string]: NodeStyle }
+  styles?: { [s: string]: StyleProp<any> }
   passProps?: {
     [s: string]: any
   }
@@ -46,23 +22,19 @@ export interface HTMLRendererProps {
   onLinkPress?(url: string): void
 }
 
-export type ElementRenderer = (
-  node: Node,
-  renderChildren: (nodes: Node[] | null) => ReactNode,
-  style: NodeStyle,
-  props: ElementProps
-) => ReactNode
+export type ElementRenderer = (renderedChildren: ReactNode[], style: StyleProp<any>, props: ElementProps) => ReactNode
 
 export interface ElementProps {
-  attributes?: NodeAttributes
+  attributes?: { [s: string]: string }
   passProps?: {
     [s: string]: any
   }
-  handleLinkPress(url: string): void
+  handleLinkPress?(url: string): void
+  children?: DomNode[]
+  siblings?: DomNode[]
+  parent?: DomNode
+  data?: string
+  key: string
 }
 
-export interface NodeAttributes {
-  [s: string]: string
-}
-
-export type NodeStyle = StyleProp<any>
+export interface NodeAttributes {}
