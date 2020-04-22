@@ -92,8 +92,8 @@ const HTMLRenderer = memo(
         const attributes = getNodeAttributes(node)
         const selectors = getNodeSelectors(node, previousSelectors)
 
-        let children = (DomUtils.getChildren(node) || []).filter((sibling) => Boolean(sibling))
-        const siblings = (DomUtils.getSiblings(node) || []).filter((sibling) => Boolean(sibling))
+        let children = DomUtils.getChildren(node)
+        const siblings = DomUtils.getSiblings(node)
         const parent = DomUtils.getParent(node)
 
         const renderer = getRenderer(selectors)
@@ -180,7 +180,7 @@ const HTMLRenderer = memo(
           decodeEntities: parserOptions?.decodeEntities || true,
           recognizeSelfClosing: parserOptions?.recognizeSelfClosing || true,
         })
-        parser.write(rawHtml)
+        parser.write(rawHtml.replace('\n', ''))
         parser.done()
       },
       [parserOptions, domHandler]

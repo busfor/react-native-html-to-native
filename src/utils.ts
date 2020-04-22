@@ -1,14 +1,14 @@
 import * as DomUtils from 'domutils'
 import type { Node } from 'domhandler'
 
-import { CustomNodeNames, TextNodeName } from './types'
+import { TextNodeName } from './types'
 
 export const getNodeName = (node: Node) => {
   if (DomUtils.isTag(node)) {
     return DomUtils.getName(node)
   } else if (DomUtils.isText(node)) {
     if (node.parent && getNodeName(node.parent) === 'li' && DomUtils.getChildren(node.parent).indexOf(node) === 0) {
-      return CustomNodeNames.Indicator
+      return TextNodeName.IndicatorNode
     }
     return TextNodeName.TextNode
   }
@@ -16,7 +16,7 @@ export const getNodeName = (node: Node) => {
 
 export const getNodeData = (node: Node) => {
   if (DomUtils.isText(node)) {
-    return DomUtils.getText(node).replace('\n', '')
+    return DomUtils.getText(node)
   }
 }
 

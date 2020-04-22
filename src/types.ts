@@ -38,15 +38,11 @@ export interface ElementProps {
   key: string
 }
 
-export enum CustomNodeNames {
-  Indicator = 'IndicatorNode',
-}
-
 export type NodeStyle = StyleProp<any>
 
 export enum TextNodeName {
+  IndicatorNode = 'IndicatorNode',
   TextNode = 'TextNode',
-  p = 'p',
   b = 'b',
   i = 'i',
   u = 'u',

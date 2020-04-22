@@ -27,7 +27,6 @@ export default {
     </Text>
   ),
   // Text
-  p: baseTextRenderer,
   h1: baseTextRenderer,
   h2: baseTextRenderer,
   h3: baseTextRenderer,
@@ -46,6 +45,7 @@ export default {
   span: baseTextRenderer,
   // View
   div: baseViewRenderer,
+  p: baseViewRenderer,
   section: baseViewRenderer,
   article: baseViewRenderer,
   header: baseViewRenderer,
