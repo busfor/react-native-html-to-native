@@ -80,6 +80,8 @@ const HTMLRenderer = memo(
         orderedList?: { ordered: boolean; indexPrefix: string },
         unorderedList?: boolean
       ): ReactNode => {
+        if (!node) return null
+
         const name = getNodeName(node)
         const data = getNodeData(node)
 
@@ -90,8 +92,8 @@ const HTMLRenderer = memo(
         const attributes = getNodeAttributes(node)
         const selectors = getNodeSelectors(node, previousSelectors)
 
-        let children = DomUtils.getChildren(node)
-        const siblings = DomUtils.getSiblings(node)
+        let children = (DomUtils.getChildren(node) || []).filter((sibling) => Boolean(sibling))
+        const siblings = (DomUtils.getSiblings(node) || []).filter((sibling) => Boolean(sibling))
         const parent = DomUtils.getParent(node)
 
         const renderer = getRenderer(selectors)

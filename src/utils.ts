@@ -7,7 +7,7 @@ export const getNodeName = (node: Node) => {
   if (DomUtils.isTag(node)) {
     return DomUtils.getName(node)
   } else if (DomUtils.isText(node)) {
-    if (getNodeName(node.parent) === 'li' && DomUtils.getChildren(node.parent).indexOf(node) === 0) {
+    if (node.parent && getNodeName(node.parent) === 'li' && DomUtils.getChildren(node.parent).indexOf(node) === 0) {
       return CustomNodeNames.Indicator
     }
     return TextNodeName.TextNode
