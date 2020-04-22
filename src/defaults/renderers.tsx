@@ -4,6 +4,11 @@ import { View, Text, Image, TouchableOpacity } from 'react-native'
 import type { ElementRenderer } from '../types'
 
 export default {
+  IndicatorNode: (_, style, props) => (
+    <Text key={props.key} style={style}>
+      {props.data}
+    </Text>
+  ),
   TextNode: (_, style, props) => {
     if (props.siblings && props.siblings.some((sibling) => sibling.type !== 'text')) {
       const wrapText = props.data?.split(' ') || [props.data]

@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react'
 import type { StyleProp } from 'react-native'
-import type { Node as DomNode } from 'domhandler'
+import type { Node } from 'domhandler'
 
 export interface ParserOptions {
   normalizeWhitespace: boolean
@@ -30,11 +30,15 @@ export interface ElementProps {
     [s: string]: any
   }
   handleLinkPress?(url: string): void
-  children?: DomNode[]
-  siblings?: DomNode[]
-  parent?: DomNode
+  node: Node
+  children?: Node[]
+  siblings?: Node[]
+  parent?: Node
   data?: string
   key: string
 }
 
-export interface NodeAttributes {}
+export enum CustomNodeNames {
+  Text = 'TextNode',
+  Indicator = 'IndicatorNode',
+}

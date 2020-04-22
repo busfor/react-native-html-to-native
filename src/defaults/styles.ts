@@ -9,6 +9,7 @@ export default StyleSheet.create({
     width: '100%',
   },
   li: {
+    width: '100%',
     flexDirection: 'row',
     fontSize: 12,
   },
@@ -22,11 +23,9 @@ export default StyleSheet.create({
     flexDirection: 'row',
     flexWrap: 'wrap',
   },
-  OrderedIndicator: {
+  IndicatorNode: {
     paddingRight: 4,
-  },
-  UnorderedIndicator: {
-    paddingRight: 4,
+    fontSize: 12,
   },
   'h1>TextNode': {
     fontSize: 24,

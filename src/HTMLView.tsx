@@ -2,16 +2,17 @@ import React, { Fragment, ReactNode, memo, useState, useEffect, useCallback, use
 import { Linking } from 'react-native'
 import type { StyleProp } from 'react-native'
 import { Parser } from 'htmlparser2-without-node-native'
-import { DomHandler } from 'domhandler'
+import { DomHandler, Node, DataNode } from 'domhandler'
+import { ElementType } from 'domelementtype'
 import * as DomUtils from 'domutils'
-import type { Node as DomNode, Element as DomElement, DataNode as DomText } from 'domhandler'
 
 import type { HTMLRendererProps, ElementRenderer, ElementProps } from './types'
 import Defaults from './defaults'
+import { getNodeData, getNodeAttributes, getNodeSelectors, getNodeName } from './utils'
 
 const HTMLRenderer = memo(
   ({ html, renderers, styles, passProps, onError, onLinkPress, parserOptions }: HTMLRendererProps) => {
-    const [dom, setDom] = useState<DomNode[]>(null)
+    const [nodes, setNodes] = useState<Node[]>(null)
 
     const handleLinkPress = useCallback(
       async (url?: string) => {
@@ -73,100 +74,85 @@ const HTMLRenderer = memo(
     )
 
     const renderDomNode = useCallback(
-      (domNode: DomNode, previousSelectors?: string[]): ReactNode => {
-        if (DomUtils.isTag(domNode)) {
-          const tag = domNode as DomElement
-          const name = DomUtils.getName(tag)
-          const htmlClasses = DomUtils.getAttributeValue(tag, 'class')?.split(' ') || []
-          const htmlIds = DomUtils.getAttributeValue(tag, 'id')?.split(' ') || []
+      (
+        node: Node,
+        previousSelectors?: string[],
+        orderedList?: { ordered: boolean; indexPrefix: string },
+        unorderedList?: boolean
+      ): ReactNode => {
+        const name = getNodeName(node)
+        const data = getNodeData(node)
+        const attributes = getNodeAttributes(node)
+        const selectors = getNodeSelectors(node, previousSelectors)
 
-          const selectors: string[] = [name]
-          htmlClasses.forEach((htmlClass) => {
-            selectors.unshift(`.${htmlClass}`)
-            selectors.unshift(`${name}.${htmlClass}`)
-          })
+        const children = DomUtils.getChildren(node)
+        const siblings = DomUtils.getSiblings(node)
+        const parent = DomUtils.getParent(node)
 
-          let tempSelectors = [...selectors]
-          htmlIds.forEach((htmlId) => {
-            selectors.unshift(`#${htmlId}`)
-            tempSelectors.forEach((selector) => {
-              selectors.unshift(`${selector}#${htmlId}`)
-            })
-          })
+        const renderer = getRenderer(selectors)
+        let style = getStyle(selectors)
 
-          tempSelectors = [...selectors]
-          previousSelectors?.reverse().forEach((parentSelector) => {
-            tempSelectors.forEach((selector) => {
-              selectors.unshift(`${parentSelector}>${selector}`)
-            })
-          })
+        let renderedChildren = null
+        if (DomUtils.hasChildren(node)) {
+          let nextOrderedList: { ordered: boolean; indexPrefix: string } = null
+          let nextUnorderedList: boolean = null
 
-          const children = DomUtils.getChildren(tag)
-          const siblings = DomUtils.getSiblings(tag)
-          const parent = DomUtils.getParent(tag)
+          let index = 0
+          if (name === 'ul') {
+            nextUnorderedList = true
+          } else if (name === 'ol') {
+            const prefix = (orderedList && orderedList.indexPrefix) || ''
+            nextOrderedList = { ordered: true, indexPrefix: `${prefix}` }
+          } else if (name === 'li') {
+            const prefix = (orderedList && orderedList.indexPrefix) || ''
+            index = siblings.filter((sibling) => getNodeName(sibling) === 'li').indexOf(node) + 1
+            nextOrderedList = { ordered: true, indexPrefix: `${prefix}${index}`.concat(prefix === '' ? '.' : '') }
 
-          const props: ElementProps = {
-            attributes: tag.attribs,
-            handleLinkPress,
-            passProps,
-            children,
-            siblings,
-            parent,
-            key: selectors[0],
-          }
-          const renderer = getRenderer(selectors)
-          let style = getStyle(selectors)
-
-          let renderedChildren = null
-          if (DomUtils.hasChildren(tag)) {
-            if (children.some((child) => child.type !== 'text')) {
-              style = { ...style, ...Defaults.styles.TextWrap }
+            let indicatorData = ''
+            if (unorderedList) {
+              indicatorData = '•'
+            } else if (orderedList) {
+              indicatorData = `${orderedList.indexPrefix}${index}`.concat(orderedList.indexPrefix === '' ? '.' : '')
             }
-            renderedChildren = children.map((child) => renderDomNode(child, selectors))
-          }
-          if (renderer) {
-            return renderer(renderedChildren, style, props)
-          } else {
-            return renderedChildren
-          }
-        } else if (DomUtils.isText(domNode)) {
-          const text = domNode as DomText
-          const name = 'TextNode'
-          const data = DomUtils.getText(text)
 
-          const selectors: string[] = [name]
-          previousSelectors?.reverse().forEach((parentSelector) => {
-            selectors.unshift(`${parentSelector}>${name}`)
-          })
-
-          const siblings = DomUtils.getSiblings(text)
-          const parent = DomUtils.getParent(text)
-
-          const props: ElementProps = {
-            passProps,
-            siblings,
-            parent,
-            data,
-            key: selectors[0],
+            const indicator = new DataNode(ElementType.Text, indicatorData)
+            DomUtils.prepend(children[0], indicator)
           }
-          const renderer = getRenderer(selectors)
-          let style = getStyle(selectors)
 
-          if (renderer) {
-            return renderer(null, style, props)
+          if (children.some((child) => child.type !== 'text')) {
+            style = { ...style, ...Defaults.styles.TextWrap }
           }
+          renderedChildren = children.map((child) =>
+            renderDomNode(child, selectors, nextOrderedList, nextUnorderedList)
+          )
         }
-        return null
+
+        const props: ElementProps = {
+          node,
+          attributes,
+          handleLinkPress,
+          passProps,
+          children,
+          siblings,
+          parent,
+          data,
+          key: selectors[0],
+        }
+        if (renderer) {
+          return renderer(renderedChildren, style, props)
+        } else {
+          return renderedChildren
+        }
       },
       [handleLinkPress]
     )
 
     const domHandlerCallback = useCallback(
-      (err: Error, parsedDom: DomNode[]) => {
+      (err: Error, dom: Node[]) => {
         if (err) {
           handleParseError(err)
         } else {
-          setDom(parsedDom)
+          setNodes(dom)
         }
       },
       [handleParseError]
@@ -193,7 +179,7 @@ const HTMLRenderer = memo(
       parseHtml(html)
     }, [html, parseHtml])
 
-    const renderedHtml = useMemo(() => dom && dom.map((domNode) => renderDomNode(domNode)), [dom, renderDomNode])
+    const renderedHtml = useMemo(() => nodes && nodes.map((node) => renderDomNode(node)), [nodes, renderDomNode])
 
     return <Fragment>{renderedHtml}</Fragment>
   }

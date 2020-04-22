@@ -8,7 +8,7 @@
   "scripts": {
     "build": "rm -rf ./dist && tsc || true",
     "version": "auto-changelog -p && git add CHANGELOG.md",
-    "postversion": "git push --tags && git push",
+    "postversion": "git push --tags && git push origin $(git rev-parse --abbrev-ref HEAD)",
     "rc:patch": "yarn version --prepatch --preid rc",
     "rc:minor": "yarn version --preminor --preid rc",
     "rc:major": "yarn version --premajor --preid rc",
@@ -65,6 +65,7 @@
     "typescript": "^3.8.3"
   },
   "dependencies": {
+    "domelementtype": "^2.0.1",
     "domhandler": "^3.0.0",
     "domutils": "^2.0.0",
     "htmlparser2-without-node-native": "^3.9.2"

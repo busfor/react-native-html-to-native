@@ -43,6 +43,12 @@ const styles = StyleSheet.create({
   'p>TextNode': {
     fontSize: 16,
   },
+  'ol>li>IndicatorNode': {
+    color: 'green',
+  },
+  'ul>li>IndicatorNode': {
+    color: 'blue',
+  },
   'li>TextNode': {
     color: 'red',
   },
