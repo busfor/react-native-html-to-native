@@ -24,14 +24,12 @@ export default {
   ),
   TextNode: (_, style, props) => {
     const isParentView = props.parent && !(getNodeName(props.parent) in TextNodeName)
-    const isSomeSiblingsNotText =
-      props.siblings && props.siblings.some((sibling) => !(getNodeName(sibling) in TextNodeName))
+    const isSomeSiblingsNotText = props.siblings && props.siblings.some((sibling) => sibling.type !== 'text')
     if (isParentView && isSomeSiblingsNotText) {
       const wrapText = props.data?.split(' ') || [props.data]
       return wrapText.map((text, index) => (
         <Text key={`${props.key}-${index}`} style={style}>
-          {text}
-          {index !== wrapText.length - 1 && ' '}
+          {text}={index !== wrapText.length - 1 && ' '}
         </Text>
       ))
     } else {
