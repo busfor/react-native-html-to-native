@@ -1,4 +1,4 @@
-import type { ReactNode } from 'react'
+import type { ReactNode, ComponentType } from 'react'
 import type { StyleProp } from 'react-native'
 import type { Node } from 'domhandler'
 
@@ -20,6 +20,8 @@ export interface HTMLRendererProps {
   parserOptions?: ParserOptions
   onError?(err: any): void
   onLinkPress?(url: string): void
+  onLoading?(loadingState: boolean): void
+  LoaderComponent?: ComponentType<any>
 }
 
 export type ElementRenderer = (renderedChildren: ReactNode[], style: StyleProp<any>, props: ElementProps) => ReactNode
@@ -37,8 +39,6 @@ export interface ElementProps {
   data?: string
   key: string
 }
-
-export type NodeStyle = StyleProp<any>
 
 export enum TextNodeName {
   IndicatorNode = 'IndicatorNode',

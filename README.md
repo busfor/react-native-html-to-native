@@ -40,15 +40,17 @@ import { HTMLView } from '@busfor/react-native-html-to-native'
 
 ## Properties
 
-| Name              | Description                              | Type            |
-| ----------------- | ---------------------------------------- | --------------- |
-| **html\***        | Raw HTML code to be parsed and presented | string          |
-| **renderers**     | HTML nodes render functions              | Object          |
-| **passProps**     | Custom props passed to node renderer     | Object          |
-| **styles**        | Custom node styles                       | Object          |
-| **onError**       | Error callback function                  | Function        |
-| **onLinkPress**   | Link press callback function             | Function        |
-| **parserOptions** | Parser options, see _ParserOptions_ type | _ParserOptions_ |
+| Name                | Description                                                            | Type            |
+| ------------------- | ---------------------------------------------------------------------- | --------------- |
+| **html\***          | Raw HTML code to be parsed and presented                               | string          |
+| **renderers**       | HTML nodes render functions                                            | Object          |
+| **passProps**       | Custom props passed to node renderer                                   | Object          |
+| **styles**          | Custom node styles                                                     | Object          |
+| **onError**         | Error callback function                                                | Function        |
+| **onLinkPress**     | Link press callback function                                           | Function        |
+| **parserOptions**   | Parser options, see _ParserOptions_ type                               | _ParserOptions_ |
+| **onLoading**       | Loading state callback, only parameter is loadingState of type boolean | Function        |
+| **LoaderComponent** | Loader component to be shown while HTML loading is in progress         | ComponentType   |
 
 \* - required property
 
@@ -64,13 +66,31 @@ import { HTMLView } from '@busfor/react-native-html-to-native'
 
 ---
 
-**ElementRenderer** -
+**ElementRenderer** - function for rendering html nodes as native elements
+
+(_renderedChildren_: **Array\<ReactNode>**, _style_: **StyleProp\<any>**, _props_: **ElementProps**) => **ReactNode**
+
+Function accepts rendered node's children, node's style and props
 
 Should return **ReactNode**
 
+For more see **Default renderers**
+
 ---
 
-**ElementProps** -
+**ElementProps** - props of rendering HTML node
+
+| Name            | Description                                           | Type                |
+| --------------- | ----------------------------------------------------- | ------------------- |
+| attributes      | HTML tag attributes                                   | Object or undefined |
+| passProps       | Custom props passed to component render from HTMLView | Object              |
+| handleLinkPress | Link press handler function                           | Function            |
+| node            | HTML node for which element is rendered               | Node                |
+| children        | Node's children array                                 | Array\<Node>        |
+| siblings        | Node's siblings array                                 | Array\<Node>        |
+| parent          | Node's parent                                         | Node                |
+| data            | Text data for text nodes                              | string              |
+| key             | Unique key for component rendering                    | string              |
 
 ---
 
@@ -97,10 +117,6 @@ Also feel free to fork and contribute by opening [Pull Request](https://github.c
 # TODO:
 
 ⬜️ Add CSS selectors docs
-
-⬜️ Update props docs
-
-⬜️ Add parsing progress indication and status
 
 ⬜️ Improve CSS selectors
 

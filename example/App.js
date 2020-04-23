@@ -27,6 +27,7 @@ export default () => (
           },
         }}
         html={html}
+        onLoading={(loading) => console.log(loading)}
       />
     </ScrollView>
   </SafeAreaView>

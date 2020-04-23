@@ -11,8 +11,19 @@ import Defaults from './defaults'
 import { getNodeData, getNodeAttributes, getNodeSelectors, getNodeName } from './utils'
 
 const HTMLRenderer = memo(
-  ({ html, renderers, styles, passProps, onError, onLinkPress, parserOptions }: HTMLRendererProps) => {
+  ({
+    html,
+    renderers,
+    styles,
+    passProps,
+    onError,
+    onLinkPress,
+    parserOptions,
+    onLoading,
+    LoaderComponent,
+  }: HTMLRendererProps) => {
     const [nodes, setNodes] = useState<Node[]>(null)
+    const [loading, setLoading] = useState<boolean>(false)
 
     const handleLinkPress = useCallback(
       async (url?: string) => {
@@ -191,10 +202,28 @@ const HTMLRenderer = memo(
     )
 
     useEffect(() => {
+      if (onLoading) {
+        onLoading(true)
+      }
+      setLoading(true)
       parseHtml(html)
-    }, [html, parseHtml])
+    }, [html, parseHtml, onLoading])
 
-    const renderedHtml = useMemo(() => nodes && nodes.map((node) => renderDomNode(node)), [nodes, renderDomNode])
+    const renderedHtml = useMemo(() => {
+      let renderResult
+      if (nodes) {
+        renderResult = nodes.map((node) => renderDomNode(node))
+      }
+      setLoading(false)
+      if (onLoading) {
+        onLoading(false)
+      }
+      return renderResult
+    }, [nodes, renderDomNode, onLoading])
+
+    if (loading && LoaderComponent) {
+      return <LoaderComponent />
+    }
 
     return <Fragment>{renderedHtml}</Fragment>
   }
