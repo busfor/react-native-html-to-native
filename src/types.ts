@@ -8,7 +8,7 @@ export interface ParserOptions {
   decodeEntities: boolean
 }
 
-export interface HTMLRendererProps {
+export interface HTMLViewProps {
   html: string
   renderers?: {
     [s: string]: ElementRenderer
@@ -21,7 +21,6 @@ export interface HTMLRendererProps {
   onError?(err: any): void
   onLinkPress?(url: string): void
   onLoading?(loadingState: boolean): void
-  renderLoading?(): ReactNode
 }
 
 export type ElementRenderer = (renderedChildren: ReactNode[], style: StyleProp<any>, props: ElementProps) => ReactNode
