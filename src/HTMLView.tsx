@@ -21,7 +21,9 @@ const HTMLView = memo(
         (newState: boolean) => {
           if (newState !== loading.current) {
             loading.current = newState
-            onLoading(newState)
+            if (onLoading) {
+              onLoading(newState)
+            }
           }
         },
         [onLoading]
