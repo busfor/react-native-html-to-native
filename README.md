@@ -33,6 +33,7 @@ import { HTMLView } from '@busfor/react-native-html-to-native'
     },
   }}
   html={'<div><p>Paragraph</p></div>'}
+  onLoading={(loading) => console.log(loading)}
 />
 ```
 
@@ -96,6 +97,18 @@ For more see **Default renderers**
 
 ## Selectors
 
+Selectors system built in a CSS-like manner
+
+To select element by tag name just use it as is: _ol_, _p_, etc.
+
+For selecting by class or id use _.class_ and _#id_. For more specific selection of component with class(same for component with id) use it like: _p.class_
+
+Also it is possible to select HTML node by path like _ol>li_ or _ol.class>li#id_ etc.
+
+Some HTML node have custom selectors. Text nodes are rendered as React Native \<Text> components and can be accessed by _TextNode_ selector. Same for list items indicators nodes - access it by _IndicatorNode_ selector.
+
+For more examples of using selectors see **Usage**, **Example app** and **Default renderers and styles**
+
 ## Default renderers
 
 Some HTML tags are rendered by default, some are skipped while rendering.
@@ -115,8 +128,6 @@ Feel free to report any bug or request any functionality you would like to be do
 Also feel free to fork and contribute by opening [Pull Request](https://github.com/busfor/react-native-html-to-native/compare). All pull requests will be reviewed and merged if everything is OK!
 
 # TODO:
-
-⬜️ Add CSS selectors docs
 
 ⬜️ Improve CSS selectors
 
