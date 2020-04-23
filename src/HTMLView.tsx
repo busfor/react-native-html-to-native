@@ -113,7 +113,7 @@ const HTMLRenderer = memo(
           } else if (name === 'li') {
             const prefix = (orderedList && orderedList.indexPrefix) || ''
             index = siblings.filter((sibling) => getNodeName(sibling) === 'li').indexOf(node) + 1
-            nextOrderedList = { ordered: true, indexPrefix: `${prefix}${index}`.concat(prefix === '' ? '.' : '') }
+            nextOrderedList = { ordered: true, indexPrefix: `${prefix}${index}`.concat('.') }
 
             let indicatorData = ''
             if (unorderedList) {

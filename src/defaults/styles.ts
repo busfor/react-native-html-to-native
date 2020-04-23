@@ -11,7 +11,11 @@ export default StyleSheet.create({
   li: {
     width: '100%',
     flexDirection: 'row',
+    flexWrap: 'wrap',
     fontSize: 12,
+  },
+  'li>ol>li': {
+    marginLeft: 4,
   },
   p: {
     width: '100%',
@@ -126,8 +130,5 @@ export default StyleSheet.create({
   },
   'a>TextNode': {
     color: 'blue',
-  },
-  'ol>li>ol': {
-    marginLeft: 4,
   },
 }) as { [s: string]: StyleProp<any> }

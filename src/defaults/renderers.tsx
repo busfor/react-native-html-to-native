@@ -25,7 +25,8 @@ export default {
   TextNode: (_, style, props) => {
     const isParentView = props.parent && !(getNodeName(props.parent) in TextNodeName)
     const isSomeSiblingsNotText = props.siblings && props.siblings.some((sibling) => sibling.type !== 'text')
-    if (isParentView && isSomeSiblingsNotText) {
+    const isListItem = props.parent && getNodeName(props.parent) === 'li'
+    if ((isParentView && isSomeSiblingsNotText) || isListItem) {
       const wrapText = props.data?.split(' ') || [props.data]
       return wrapText.map((text, index) => (
         <Text key={`${props.key}-${index}`} style={style}>
@@ -69,9 +70,9 @@ export default {
   thead: baseViewRenderer,
   tbody: baseViewRenderer,
   tfoot: baseViewRenderer,
+  li: baseViewRenderer,
   ul: baseViewRenderer,
   ol: baseViewRenderer,
-  li: baseViewRenderer,
   table: baseViewRenderer,
   tr: baseViewRenderer,
   td: baseViewRenderer,
