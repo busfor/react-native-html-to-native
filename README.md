@@ -41,17 +41,17 @@ import { HTMLView } from '@busfor/react-native-html-to-native'
 
 ## Properties
 
-| Name                | Description                                                            | Type            |
-| ------------------- | ---------------------------------------------------------------------- | --------------- |
-| **html\***          | Raw HTML code to be parsed and presented                               | string          |
-| **renderers**       | HTML nodes render functions                                            | Object          |
-| **passProps**       | Custom props passed to node renderer                                   | Object          |
-| **styles**          | Custom node styles                                                     | Object          |
-| **onError**         | Error callback function                                                | Function        |
-| **onLinkPress**     | Link press callback function                                           | Function        |
-| **parserOptions**   | Parser options, see _ParserOptions_ type                               | _ParserOptions_ |
-| **onLoading**       | Loading state callback, only parameter is loadingState of type boolean | Function        |
-| **LoaderComponent** | Loader component to be shown while HTML loading is in progress         | ComponentType   |
+| Name              | Description                                                            | Type            |
+| ----------------- | ---------------------------------------------------------------------- | --------------- |
+| **html\***        | Raw HTML code to be parsed and presented                               | string          |
+| **renderers**     | HTML nodes render functions                                            | Object          |
+| **passProps**     | Custom props passed to node renderer                                   | Object          |
+| **styles**        | Custom node styles                                                     | Object          |
+| **onError**       | Error callback function                                                | Function        |
+| **onLinkPress**   | Link press callback function                                           | Function        |
+| **parserOptions** | Parser options, see _ParserOptions_ type                               | _ParserOptions_ |
+| **onLoading**     | Loading state callback, only parameter is loadingState of type boolean | Function        |
+| **renderLoading** | Function to render custom loading indicator                            | Function        |
 
 \* - required property
 

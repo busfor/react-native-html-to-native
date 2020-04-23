@@ -1,5 +1,5 @@
 import React, { Fragment, ReactNode, memo, useState, useEffect, useCallback, useMemo } from 'react'
-import { Linking } from 'react-native'
+import { Linking, View } from 'react-native'
 import type { StyleProp } from 'react-native'
 import { Parser } from 'htmlparser2-without-node-native'
 import { DomHandler, Node, DataNode } from 'domhandler'
@@ -20,7 +20,7 @@ const HTMLRenderer = memo(
     onLinkPress,
     parserOptions,
     onLoading,
-    LoaderComponent,
+    renderLoading,
   }: HTMLRendererProps) => {
     const [nodes, setNodes] = useState<Node[]>(null)
     const [loading, setLoading] = useState<boolean>(false)
@@ -47,6 +47,7 @@ const HTMLRenderer = memo(
 
     const handleParseError = useCallback(
       (err) => {
+        setLoading(false)
         if (onError) {
           onError(err)
         }
@@ -195,6 +196,7 @@ const HTMLRenderer = memo(
           decodeEntities: parserOptions?.decodeEntities || true,
           recognizeSelfClosing: parserOptions?.recognizeSelfClosing || true,
         })
+        setLoading(true)
         parser.write(rawHtml.replace('\n', ''))
         parser.done()
       },
@@ -202,30 +204,33 @@ const HTMLRenderer = memo(
     )
 
     useEffect(() => {
-      if (onLoading) {
-        onLoading(true)
-      }
-      setLoading(true)
       parseHtml(html)
-    }, [html, parseHtml, onLoading])
+    }, [html, parseHtml])
 
-    const renderedHtml = useMemo(() => {
-      let renderResult
-      if (nodes) {
-        renderResult = nodes.map((node) => renderDomNode(node))
-      }
-      setLoading(false)
+    const renderedHtml = useMemo(
+      () =>
+        nodes && (
+          <View onLayout={() => setLoading(false)}>
+            {nodes.map((node, index) => (
+              <Fragment key={`root-${index}`}>{renderDomNode(node)}</Fragment>
+            ))}
+          </View>
+        ),
+      [nodes, renderDomNode, onLoading]
+    )
+
+    useEffect(() => {
       if (onLoading) {
-        onLoading(false)
+        onLoading(loading)
       }
-      return renderResult
-    }, [nodes, renderDomNode, onLoading])
+    }, [loading, onLoading])
 
-    if (loading && LoaderComponent) {
-      return <LoaderComponent />
-    }
-
-    return <Fragment>{renderedHtml}</Fragment>
+    return (
+      <Fragment>
+        {loading && renderLoading && renderLoading()}
+        {renderedHtml}
+      </Fragment>
+    )
   }
 )
 

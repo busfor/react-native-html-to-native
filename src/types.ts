@@ -1,4 +1,4 @@
-import type { ReactNode, ComponentType } from 'react'
+import type { ReactNode } from 'react'
 import type { StyleProp } from 'react-native'
 import type { Node } from 'domhandler'
 
@@ -21,7 +21,7 @@ export interface HTMLRendererProps {
   onError?(err: any): void
   onLinkPress?(url: string): void
   onLoading?(loadingState: boolean): void
-  LoaderComponent?: ComponentType<any>
+  renderLoading?(): ReactNode
 }
 
 export type ElementRenderer = (renderedChildren: ReactNode[], style: StyleProp<any>, props: ElementProps) => ReactNode
