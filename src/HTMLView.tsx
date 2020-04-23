@@ -112,11 +112,12 @@ const HTMLRenderer = memo(
         let style = getStyle(selectors)
 
         let renderedChildren = null
+        let index = 0
+
         if (DomUtils.hasChildren(node)) {
           let nextOrderedList: { ordered: boolean; indexPrefix: string } = null
           let nextUnorderedList: boolean = null
 
-          let index = 0
           if (name === 'ul') {
             nextUnorderedList = true
           } else if (name === 'ol') {
@@ -159,7 +160,7 @@ const HTMLRenderer = memo(
           siblings,
           parent,
           data,
-          key: String(node.startIndex),
+          key: String(node.startIndex !== null ? node.startIndex : `${parent.startIndex}-${name}-${index}`),
         }
         if (renderer) {
           return renderer(renderedChildren, style, props)
