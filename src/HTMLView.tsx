@@ -170,7 +170,7 @@ const HTMLView = memo(
             return renderedChildren
           }
         },
-        [handleLinkPress]
+        [getStyle, getRenderer, handleLinkPress]
       )
 
       const domHandlerCallback = useCallback(
@@ -222,7 +222,7 @@ const HTMLView = memo(
               ))}
             </View>
           ),
-        [nodes, renderDomNode, onLoading]
+        [nodes, renderDomNode, setLoading]
       )
 
       return (
