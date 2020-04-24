@@ -1,6 +1,7 @@
 import * as DomUtils from 'domutils'
 import type { Node } from 'domhandler'
 
+import { minify } from './htmlminifier'
 import { TextNodeName } from './types'
 
 export const getNodeName = (node: Node) => {
@@ -16,7 +17,7 @@ export const getNodeName = (node: Node) => {
 
 export const getNodeData = (node: Node) => {
   if (DomUtils.isText(node)) {
-    return DomUtils.getText(node).replace(/\n/g, '')
+    return DomUtils.getText(node)
   }
 }
 
@@ -71,3 +72,5 @@ export const getNodeSelectors = (node: Node, parentSelectors?: string[]) => {
 
   return selectors
 }
+
+export const getMinifiedHTML = (html: string) => minify(html, { collapseWhitespace: true })

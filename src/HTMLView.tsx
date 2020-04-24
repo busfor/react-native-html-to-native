@@ -8,7 +8,7 @@ import * as DomUtils from 'domutils'
 
 import { HTMLViewProps, ElementRenderer, ElementProps, TextNodeName } from './types'
 import Defaults from './defaults'
-import { getNodeData, getNodeAttributes, getNodeSelectors, getNodeName } from './utils'
+import { getNodeData, getNodeAttributes, getNodeSelectors, getNodeName, getMinifiedHTML } from './utils'
 
 const HTMLView = memo(
   forwardRef<View, HTMLViewProps & ViewProps>(
@@ -100,10 +100,6 @@ const HTMLView = memo(
 
           const name = getNodeName(node)
           const data = getNodeData(node)
-
-          if (name === TextNodeName.TextNode && data.trim().length === 0) {
-            return null
-          }
 
           const attributes = getNodeAttributes(node)
           const selectors = getNodeSelectors(node, previousSelectors)
@@ -201,7 +197,7 @@ const HTMLView = memo(
             decodeEntities: parserOptions?.decodeEntities || true,
             recognizeSelfClosing: parserOptions?.recognizeSelfClosing || true,
           })
-          parser.write(rawHtml.replace('\n', ''))
+          parser.write(getMinifiedHTML(rawHtml))
           parser.done()
         },
         [parserOptions, domHandler]
