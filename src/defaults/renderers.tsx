@@ -29,10 +29,14 @@ export default {
     if ((isParentView && isSomeSiblingsNotText) || isListItem) {
       const wrapText = props.data?.split(' ') || [props.data]
       return wrapText.map((text, index) => (
-        <Text key={`${props.key}-${index}`} style={style}>
-          {text}
-          {index !== wrapText.length - 1 && ' '}
-        </Text>
+        <>
+          <Text key={`${props.key}-${index}`} style={style}>
+            {text}
+          </Text>
+          <Text key={`${props.key}-space-${index}`} style={style}>
+            {index !== wrapText.length - 1 && ' '}
+          </Text>
+        </>
       ))
     } else {
       return (

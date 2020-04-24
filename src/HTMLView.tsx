@@ -128,15 +128,17 @@ const HTMLView = memo(
               index = siblings.filter((sibling) => getNodeName(sibling) === 'li').indexOf(node) + 1
               nextOrderedList = { ordered: true, indexPrefix: `${prefix}${index}`.concat('.') }
 
-              let indicatorData = ''
-              if (unorderedList) {
-                indicatorData = '•'
-              } else if (orderedList) {
-                indicatorData = `${orderedList.indexPrefix}${index}`.concat(orderedList.indexPrefix === '' ? '.' : '')
-              }
+              if (children[0].startIndex !== null) {
+                let indicatorData = ''
+                if (unorderedList) {
+                  indicatorData = '•'
+                } else if (orderedList) {
+                  indicatorData = `${orderedList.indexPrefix}${index}`.concat(orderedList.indexPrefix === '' ? '.' : '')
+                }
 
-              const indicator = new DataNode(ElementType.Text, indicatorData)
-              DomUtils.prepend(children[0], indicator)
+                const indicator = new DataNode(ElementType.Text, indicatorData)
+                DomUtils.prepend(children[0], indicator)
+              }
             }
 
             if (children.some((child) => child.type !== 'text')) {
