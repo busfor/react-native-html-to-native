@@ -199,7 +199,11 @@ const HTMLView = memo(
             decodeEntities: parserOptions?.decodeEntities || true,
             recognizeSelfClosing: parserOptions?.recognizeSelfClosing || true,
           })
-          parser.write(getMinifiedHTML(rawHtml))
+          parser.write(
+            getMinifiedHTML(rawHtml)
+              // remove tags <p></p> inside <li></li>
+              .replace(/<li(.*?)><p(.*?)>(.*?)<\/p><\/li>/g, '<li$1>$3</li>')
+          )
           parser.done()
         },
         [parserOptions, domHandler]
