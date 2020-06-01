@@ -1,7 +1,7 @@
 {
   "name": "@busfor/react-native-html-to-native",
   "title": "React Native Html To Native",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "Create customizable React Native views from HTML markup",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
@@ -23,7 +23,7 @@
     "postrelease:patch": "yarn publish --new-version $npm_package_version --access public",
     "postrelease:minor": "yarn publish --new-version $npm_package_version --access public",
     "postrelease:major": "yarn publish --new-version $npm_package_version --access public",
-    "prepublishOnly": "yarn build"
+    "prepublishOnly": "yarn build || true"
   },
   "repository": {
     "type": "git",
