@@ -85,7 +85,7 @@ export default {
   address: baseViewRenderer,
   blockquote: baseViewRenderer,
   // Dividers
-  br: (_, style, __) => <View style={style} />,
+  br: (_, style, __) => <Text style={style}>{'\n'}</Text>,
   hr: (_, style, __) => <View style={style} />,
   // Other
   img: (_, style, props) => <Image key={props.key} style={style} source={{ uri: props.attributes?.src }} />,
